@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id               String         @id @default(uuid())
+  nombre           String
+  correo           String         @unique
+  contraseña       String?
+  imagen_perfil    String?
+  proveedor_google Boolean        @default(false)
+  rol              String         @default("usuario")
+  creado_en        DateTime       @default(now())
+
+  alquileres       Alquiler[]
+  compras          Compra[]
+  transacciones    Transaccion[]
+}
+
+model Pelicula {
+  id               String       @id @default(uuid())
+  titulo           String
+  sinopsis         String
+  director         String
+  genero           String[]
+  duracion_minutos Int
+  portada_url      String
+  trailer_url      String
+  fecha_estreno    DateTime
+  precio_compra    Decimal
+  precio_alquiler  Decimal
+  estado           String        @default("disponible") // disponible, proximamente, etc.
+  creada_en        DateTime      @default(now())
+
+  alquileres       Alquiler[]
+  compras          Compra[]
+  transacciones    Transaccion[]
+}
+
+model Alquiler {
+  id             String     @id @default(uuid())
+  usuario        Usuario    @relation(fields: [usuario_id], references: [id])
+  usuario_id     String
+  pelicula       Pelicula   @relation(fields: [pelicula_id], references: [id])
+  pelicula_id    String
+  fecha_inicio   DateTime   @default(now())
+  fecha_fin      DateTime
+  estado         String     @default("vigente") // vigente, vencido
+}
+
+model Compra {
+  id             String     @id @default(uuid())
+  usuario        Usuario    @relation(fields: [usuario_id], references: [id])
+  usuario_id     String
+  pelicula       Pelicula   @relation(fields: [pelicula_id], references: [id])
+  pelicula_id    String
+  fecha_compra   DateTime   @default(now())
+  monto          Decimal
+}
+
+model Transaccion {
+  id                String     @id @default(uuid())
+  usuario_id        String
+  pelicula_id       String
+  tipo              String
+  monto             Decimal
+  estado_pago       String
+  fecha_transaccion DateTime  @default(now())
+
+  usuario  Usuario   @relation(fields: [usuario_id], references: [id])
+  pelicula Pelicula  @relation(fields: [pelicula_id], references: [id])
+}
