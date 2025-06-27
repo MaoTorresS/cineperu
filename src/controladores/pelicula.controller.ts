@@ -4,11 +4,11 @@ import * as peliculaService from '../servicios/pelicula.service';
 export const listarPeliculas = async (_req: Request, res: Response) => {
   const peliculas = await peliculaService.listarPeliculas();
   res.json(peliculas);
-};
+}; 
 
 export const obtenerPelicula = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const pelicula = await peliculaService.obtenerPeliculaPorId(id);
+  const pelicula = await peliculaService.obtenerPelicula(id);
   if (!pelicula) {
     return res.status(404).json({ mensaje: 'Película no encontrada' });
   }
@@ -44,7 +44,7 @@ export const editarPelicula = async (req: Request, res: Response) => {
 export const borrarPelicula = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    await peliculaService.eliminarPelicula(id);
+    await peliculaService.borrarPelicula(id);
     res.status(204).send();
   } catch (error) {
     console.error('Error al eliminar película:', error);

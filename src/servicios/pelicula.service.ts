@@ -1,37 +1,49 @@
-import { Pelicula } from '../modelos/pelicula.model';
+// src/servicios/pelicula.service.ts
 import { prisma } from '../prisma/client';
+import type { Pelicula as PeliculaPrisma } from '@prisma/client';
 
-export const obtenerPeliculas = (): Promise<Pelicula[]> => {
-  return prisma.pelicula.findMany({
-    orderBy: { fecha_estreno: 'desc' },
+export const crearPelicula = (pelicula: Omit<PeliculaPrisma, 'id' | 'creada_en'>) => {
+  return prisma.pelicula.create({
+    data: pelicula,
   });
 };
 
-export const crearPelicula = (data: Omit<Pelicula, 'id' | 'creada_en'>): Promise<Pelicula> => {
-  return prisma.pelicula.create({ data });
+export const listarPeliculas = () => {
+  return prisma.pelicula.findMany({
+    orderBy: {
+      creada_en: 'desc',
+    },
+  });
 };
 
-export const editarPelicula = (id: string, datos: any) => {
+export const obtenerPelicula = (id: string) => {
+  return prisma.pelicula.findUnique({
+    where: { id },
+  });
+};
+
+export const editarPelicula = (id: string, datos: Partial<PeliculaPrisma>) => {
   return prisma.pelicula.update({
     where: { id },
     data: datos,
   });
 };
 
-export const eliminarPelicula = (id: string) => {
+export const borrarPelicula = (id: string) => {
   return prisma.pelicula.delete({
     where: { id },
   });
 };
-
-export const listarPeliculas = (): Promise<Pelicula[]> => {
+export const buscarPeliculasPorTitulo = (titulo: string) => {
   return prisma.pelicula.findMany({
-    orderBy: { fecha_estreno: 'desc' },
-  });
-};
-
-export const obtenerPeliculaPorId = (id: string): Promise<Pelicula | null> => {
-  return prisma.pelicula.findUnique({
-    where: { id },
+    where: {
+      titulo: {
+        contains: titulo,
+        mode: 'insensitive',
+      },
+    },
+    orderBy: {
+      creada_en: 'desc',
+    },
   });
 };
