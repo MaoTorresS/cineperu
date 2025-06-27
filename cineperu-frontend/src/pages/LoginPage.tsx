@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import API from '../api/axios';
 import { useAuth } from '../context/AuthContext';
-import NavBar from '../components/NavBar'; // ✅ Importamos el NavBar
+import NavBar from '../components/NavBar';
 
 type LoginResponse = {
   token: string;
@@ -24,44 +24,86 @@ export default function LoginPage() {
       login(res.data.token);
       navigate('/');
     } catch (err: any) {
-      console.error("Error al hacer login:", err);
+      console.error('Error al hacer login:', err);
       setError(err.response?.data?.error || 'Error al iniciar sesión');
     }
   };
 
   return (
     <>
-      <NavBar /> {/* Mostramos el navbar arriba */}
-      <div className="max-w-md mx-auto p-6">
-        <h2 className="text-xl font-bold mb-4">Iniciar Sesión</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="email"
-            placeholder="Correo"
-            value={correo}
-            onChange={(e) => setCorreo(e.target.value)}
-            className="w-full border p-2 rounded"
+      <NavBar />
+      <div className="flex min-h-full flex-col justify-center px-6 py-12 bg-gray-50 dark:bg-gray-900">
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+          <img
+            className="mx-auto h-10 w-auto"
+            src="https://your-company-logo-url.com/logo.png"
+            alt="Your Company"
           />
-          <input
-            type="password"
-            placeholder="Contraseña"
-            value={contraseña}
-            onChange={(e) => setContraseña(e.target.value)}
-            className="w-full border p-2 rounded"
-          />
-          <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded w-full">
-            Ingresar
-          </button>
-          {error && <p className="text-red-500">{error}</p>}
-        </form>
+          <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-100">
+            Iniciar sesión en tu cuenta
+          </h2>
+        </div>
 
-        {/* Texto de ayuda debajo */}
-        <p className="mt-4 text-sm text-center">
-          ¿No tienes cuenta?{' '}
-          <Link to="/register" className="text-blue-600 hover:underline">
-            Regístrate aquí
-          </Link>
-        </p>
+        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-900 dark:text-gray-100">
+                Correo electrónico
+              </label>
+              <div className="mt-2">
+                <input
+                  id="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={correo}
+                  onChange={(e) => setCorreo(e.target.value)}
+                  className="block w-full rounded-md bg-white dark:bg-gray-700 px-3 py-2 text-base text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-900 dark:text-gray-100">
+                Contraseña
+              </label>
+              <div className="mt-2">
+                <input
+                  id="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  value={contraseña}
+                  onChange={(e) => setContraseña(e.target.value)}
+                  className="block w-full rounded-md bg-white dark:bg-gray-700 px-3 py-2 text-base text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600"
+                />
+              </div>
+            </div>
+
+            {error && (
+              <p className="text-center text-red-500 text-sm">{error}</p>
+            )}
+
+            <div>
+              <button
+                type="submit"
+                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Iniciar sesión
+              </button>
+            </div>
+          </form>
+
+          <p className="mt-10 text-center text-sm text-gray-600 dark:text-gray-400">
+            ¿No tienes cuenta?{' '}
+            <Link
+              to="/register"
+              className="font-semibold text-indigo-600 hover:text-indigo-500"
+            >
+              Regístrate aquí
+            </Link>
+          </p>
+        </div>
       </div>
     </>
   );
