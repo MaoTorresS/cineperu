@@ -89,4 +89,4 @@ npm run build
 
 ## 📝 Licencia
 
-MIT License © [MaoTorresS](https://github.com/MaoTorresS)
+MIT License GRUPO 03
