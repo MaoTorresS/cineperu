@@ -67,7 +67,15 @@ cineperu/
 ├── docker-compose.yml      # Orquesta DB + Backend
 └── README.md               # Este archivo
 ```
+---
+## ARQUITECTURA INICIAL
 
+![Arquitectura 1](./cineperu-backend/assets/ARQUITECTURAINICIAL.png)
+
+---
+## ARQUITECTURA FINAL
+
+![Arquitectura 2](./cineperu-backend/assets/ARQUITECTURAFINAL.png)
 ---
 
 ## 📂 Extras
