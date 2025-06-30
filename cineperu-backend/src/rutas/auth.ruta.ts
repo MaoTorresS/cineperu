@@ -3,7 +3,9 @@ import { registro, login } from '../controladores/auth.controller';
 
 const router = Router();
 
+// ✅ Registro público - cualquiera puede registrarse
 router.post('/registro', registro);
-router.post('/login', login); // ✅ esta es la que usaremos ahora
+// ✅ Login público
+router.post('/login', login);
 
 export default router;
