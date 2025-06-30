@@ -5,7 +5,7 @@ Sistema web para alquiler y compra de películas, desarrollado como proyecto per
 
 ## 📊 Diagrama de Base de Datos
 
-![Diagrama ER](./assets/Diseño de la base de datos.png)
+![Diagrama ER](./assets/DiagramaDB.png)
 
 ---
 
