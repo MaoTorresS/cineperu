@@ -70,12 +70,12 @@ cineperu/
 ---
 ## ARQUITECTURA INICIAL
 
-![Arquitectura 1](./cineperu-backend/assets/ARQUITECTURAINICIAL.png)
+![Arquitectura 1](./cineperu-backend/assets/ARQUITECTURA_INICIAL.png)
 
 ---
 ## ARQUITECTURA FINAL
 
-![Arquitectura 2](./cineperu-backend/assets/ARQUITECTURAFINAL.png)
+![Arquitectura 2](./cineperu-backend/assets/ARQUITECTURA_FINAL.png)
 ---
 
 ## 📂 Extras
