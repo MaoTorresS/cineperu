@@ -104,7 +104,7 @@ Desarrollar una aplicación web responsiva que permita a usuarios del Perú comp
 
 ### 🔒 Reglas de negocio
 
-• Los alquileres duran un tiempo definido (ej. 48 o 72 horas)  
+• Los alquileres duran un tiempo definido (7 días)  
 • Las compras son permanentes  
 • Una película vencida no puede alquilarse nuevamente sin renovación  
 • Solo se pueden visualizar películas alquiladas o compradas  
@@ -175,8 +175,6 @@ El archivo seed.js es útil para entornos de desarrollo. Este archivo:
 • Inserta películas de ejemplo en la base de datos  
 
 ---
-
-## 🚀 5. Desarrollo e Instalación
 
 ## 🚀 5. Desarrollo e Instalación
 
@@ -298,7 +296,7 @@ npx prisma db seed
 
 **Archivo: `src/api/axios.ts`**
 ```typescript
-import axios from 'axios';
+import axios from 'axios'; 
 
 const API = axios.create({
   baseURL: 'https://cineperu-backend.onrender.com/api',
@@ -357,15 +355,7 @@ cineperu/
 ├── docker-compose.yml      # Orquesta DB + Backend
 └── README.md               # Este archivo
 ```
----
-## ARQUITECTURA INICIAL
 
-![Arquitectura 1](./cineperu-backend/assets/ARQUITECTURA_INICIAL.png)
-
----
-## ARQUITECTURA FINAL
-
-![Arquitectura 2](./cineperu-backend/assets/ARQUITECTURA_FINAL.png)
 ---
 
 ## 🧪 Testing y Desarrollo
@@ -438,5 +428,11 @@ Las contribuciones son bienvenidas. Por favor:
 ## � Contacto
 
 **Desarrollado por:** Grupo 03  
-**Email:** [tu-email@ejemplo.com]  
+
+**INTEGRANTES:**
+- Melissa Nataly ORTIZ DIAZ
+- JAZMIN YUSARA PACHECO HUAMAN
+- MARLON WILFREDO TORRES SILVA
+- BRISSETH BRIGITTE CACERES CONTRERAS
+
 **GitHub:** [https://github.com/MaoTorresS/cineperu](https://github.com/MaoTorresS/cineperu)
