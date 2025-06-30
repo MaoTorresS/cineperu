@@ -8,11 +8,16 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 01deabril
-      POSTGRES_DB: postgres
+      POSTGRES_DB: cineperu_db
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     build: ./cineperu-backend
@@ -21,10 +26,17 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: postgresql://postgres:01deabril@db:5432/postgres
+      DATABASE_URL: postgresql://postgres:01deabril@db:5432/cineperu_db
       JWT_SECRET: supersecreto123
+      NODE_ENV: development
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 volumes:
   postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /var/lib/postgresql/data
+      o: bind 

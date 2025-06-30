@@ -21,7 +21,7 @@ export const obtenerAlquileresPorUsuario = async (usuario_id: string) => {
   });
 };
 
-// CAMBIO: Alquiler automático por 7 días
+// 🔥 CAMBIO: Alquiler automático por 7 días
 export const crearAlquiler = async (
   usuario_id: string,
   pelicula_id: string

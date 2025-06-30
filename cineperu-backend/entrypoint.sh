@@ -1,7 +1,22 @@
 #!/bin/sh
 
-echo "🏗️ Ejecutando migraciones Prisma..."
-npx prisma db push
+echo "🚀 Iniciando aplicación..."
 
-echo "🚀 Iniciando servidor Node.js..."
-node dist/app.js
+# Espera fija
+echo "⏳ Esperando 10 segundos para PostgreSQL..."
+sleep 10
+
+# Aplicar esquema con reintentos
+echo "📝 Aplicando esquema de base de datos..."
+npm run prisma:push --silent || echo "⚠️ Esquema no aplicado"
+
+# Generar cliente
+echo "🔧 Generando cliente Prisma..."
+npm run prisma:generate --silent || echo "⚠️ Cliente no generado"
+
+# Seed usando archivo JavaScript
+echo "🌱 Ejecutando seed..."
+node src/prisma/seed.js || echo "⚠️ Seed omitido"
+
+echo "🎬 Iniciando servidor..."
+exec npm start
