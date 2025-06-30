@@ -5,63 +5,7 @@ Sistema web para alquiler y compra de películas, desarrollado como proyecto per
 
 ## 📊 Diagrama de Base de Datos
 
-Este diagrama puedes copiarlo y pegarlo en [dbdiagram.io](https://dbdiagram.io) o [QuickDBD](https://quickdatabasediagrams.com):
-
-```plaintext
-Table Usuario {
-  id               uuid [pk]
-  nombre           varchar
-  correo           varchar [unique]
-  contraseña       varchar
-  imagen_perfil    varchar
-  proveedor_google boolean
-  rol              varchar
-  creado_en        timestamp
-}
-
-Table Pelicula {
-  id               uuid [pk]
-  titulo           varchar [unique]
-  sinopsis         text
-  director         varchar
-  genero           varchar[]
-  duracion_minutos int
-  portada_url      varchar
-  trailer_url      varchar
-  fecha_estreno    timestamp
-  precio_compra    decimal
-  precio_alquiler  decimal
-  estado           enum (DISPONIBLE, PROXIMAMENTE, AGOTADA, INACTIVA)
-  creada_en        timestamp
-}
-
-Table Alquiler {
-  id             uuid [pk]
-  usuario_id     uuid [ref: > Usuario.id]
-  pelicula_id    uuid [ref: > Pelicula.id]
-  fecha_inicio   timestamp
-  fecha_fin      timestamp
-  estado         varchar
-}
-
-Table Compra {
-  id             uuid [pk]
-  usuario_id     uuid [ref: > Usuario.id]
-  pelicula_id    uuid [ref: > Pelicula.id]
-  fecha_compra   timestamp
-  monto          decimal
-}
-
-Table Transaccion {
-  id                uuid [pk]
-  usuario_id        uuid [ref: > Usuario.id]
-  pelicula_id       uuid [ref: > Pelicula.id]
-  tipo              varchar
-  monto             decimal
-  estado_pago       varchar
-  fecha_transaccion timestamp
-}
-```
+![Diagrama ER](./assets/diagrama-er.png)
 
 ---
 
