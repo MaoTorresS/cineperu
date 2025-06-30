@@ -332,29 +332,84 @@ graph LR
 ```
 cineperu/
 │
-├── cineperu-backend/       # API Express + Prisma
+├── cineperu-backend/           # 🚀 API Express + Prisma
 │   ├── src/
-│   │   ├── controladores/  # Lógica de negocio
-│   │   ├── middlewares/    # Autenticación y validaciones
-│   │   ├── rutas/          # Endpoints de la API
-│   │   ├── servicios/      # Lógica de aplicación
-│   │   └── utils/          # Utilidades (JWT, etc.)
+│   │   ├── controladores/      # Lógica de negocio (Controllers)
+│   │   ├── middlewares/        # Autenticación y validaciones
+│   │   ├── rutas/              # Endpoints de la API (Routes)
+│   │   ├── servicios/          # Lógica de aplicación (Services)
+│   │   ├── utils/              # Utilidades (JWT, etc.)
+│   │   ├── prisma/
+│   │   │   ├── client.ts       # Cliente Prisma configurado
+│   │   │   └── seed.js         # Datos iniciales (admin, películas)
+│   │   └── app.ts              # Configuración del servidor Express
 │   ├── prisma/
-│   │   └── schema.prisma   # Modelo de base de datos
-│   └── Dockerfile          # Contenedor del backend
+│   │   └── schema.prisma       # Modelo de base de datos
+│   ├── assets/                 # Diagramas y documentación
+│   ├── Dockerfile              # Contenedor del backend
+│   ├── entrypoint.sh           # Script de inicialización
+│   ├── package.json            # Dependencias del backend
+│   ├── tsconfig.json           # Configuración TypeScript
+│   └── README_BACKEND.md       # Documentación del backend
 │
-├── cineperu-frontend/      # Frontend React + Tailwind
+├── cineperu-frontend/          # 🎨 Frontend React + Tailwind
 │   ├── src/
-│   │   ├── components/     # Componentes reutilizables
-│   │   ├── pages/          # Páginas principales
-│   │   ├── context/        # Context API (AuthContext)
-│   │   └── api/            # Configuración de Axios
-│   └── public/
-│       └── portadas/       # Imágenes de películas
+│   │   ├── components/         # Componentes reutilizables
+│   │   │   ├── NavBar.tsx      # Barra de navegación
+│   │   │   ├── ProtectedRoute.tsx  # Rutas protegidas
+│   │   │   └── RutaPrivada.tsx # Rutas privadas
+│   │   ├── pages/              # Páginas principales
+│   │   │   ├── Home.tsx        # Página de inicio
+│   │   │   ├── LoginPage.tsx   # Página de login
+│   │   │   └── RegisterPage.tsx # Página de registro
+│   │   ├── context/
+│   │   │   └── AuthContext.tsx # Context API (autenticación)
+│   │   ├── routes/
+│   │   │   ├── AppRouter.tsx   # Enrutador principal
+│   │   │   └── ProtectedRoute.tsx # Rutas protegidas
+│   │   ├── api/
+│   │   │   └── axios.ts        # Configuración de Axios
+│   │   ├── assets/             # Recursos estáticos
+│   │   ├── App.tsx             # Componente principal
+│   │   ├── main.tsx            # Punto de entrada
+│   │   └── index.css           # Estilos globales
+│   ├── public/
+│   │   ├── portadas/           # Imágenes de películas
+│   │   │   ├── blancanieves2025.jpg
+│   │   │   ├── comoentrenaratudragon.jpg
+│   │   │   ├── g20.jpg
+│   │   │   ├── Minecraf.jpg
+│   │   │   ├── misionimposible.jpg
+│   │   │   └── sherk5.jpg
+│   │   └── vite.svg            # Logo de Vite
+│   ├── index.html              # HTML principal
+│   ├── package.json            # Dependencias del frontend
+│   ├── vite.config.ts          # Configuración de Vite
+│   ├── tailwind.config.js      # Configuración de Tailwind
+│   ├── tsconfig.json           # Configuración TypeScript
+│   └── README_FRONTEND.md      # Documentación del frontend
 │
-├── docker-compose.yml      # Orquesta DB + Backend
-└── README.md               # Este archivo
+├── docker-compose.yml          # 🐳 Orquesta DB + Backend
+└── README.md                   # 📖 Este archivo
 ```
+
+### 🏗️ Descripción de las carpetas principales:
+
+**📂 Backend (`cineperu-backend/`):**
+- `controladores/` - Manejan las peticiones HTTP y respuestas
+- `servicios/` - Lógica de negocio y operaciones con la base de datos  
+- `rutas/` - Definición de endpoints de la API
+- `middlewares/` - Autenticación, validaciones y seguridad
+- `prisma/` - Configuración y esquema de base de datos
+- `utils/` - Funciones auxiliares (JWT, validaciones, etc.)
+
+**📂 Frontend (`cineperu-frontend/`):**
+- `pages/` - Páginas principales de la aplicación
+- `components/` - Componentes React reutilizables
+- `context/` - Manejo de estado global con Context API
+- `routes/` - Configuración de rutas y navegación
+- `api/` - Configuración para peticiones HTTP
+- `public/portadas/` - Imágenes de las películas
 
 ---
 
