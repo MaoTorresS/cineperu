@@ -5,7 +5,7 @@ Sistema web para alquiler y compra de películas, desarrollado como proyecto per
 
 ## 📊 Diagrama de Base de Datos
 
-![Diagrama ER](./assets/DiagramaDB.png)
+![Diagrama ER](./cineperu-backend/assets/DiagramaDB.png)
 
 ---
 
