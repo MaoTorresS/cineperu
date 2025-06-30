@@ -4,16 +4,25 @@ import * as compraService from '../servicios/compra.service';
 export const comprarPelicula = async (req: Request, res: Response) => {
   try {
     const usuario_id = req.usuario?.id;
-    const { pelicula_id, monto } = req.body;
+    const { pelicula_id } = req.body;
 
-    if (!usuario_id || !pelicula_id || !monto) {
-      return res.status(400).json({ mensaje: 'Datos incompletos para la compra' });
+    if (!usuario_id || !pelicula_id) {
+      return res.status(400).json({ 
+        mensaje: 'ID de película es requerido' 
+      });
     }
 
-    const compra = await compraService.crearCompra(usuario_id, pelicula_id, monto);
-    res.status(201).json(compra);
-  } catch (error) {
+    const compra = await compraService.crearCompra(usuario_id, pelicula_id);
+    res.status(201).json({
+      mensaje: 'Película comprada exitosamente',
+      compra
+    });
+  } catch (error: any) {
     console.error('Error al comprar película:', error);
+    if (error.message === 'Película no encontrada' || 
+        error.message === 'Ya has comprado esta película') {
+      return res.status(400).json({ mensaje: error.message });
+    }
     res.status(500).json({ mensaje: 'Error interno del servidor' });
   }
 };

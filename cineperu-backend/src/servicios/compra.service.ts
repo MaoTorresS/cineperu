@@ -4,26 +4,49 @@ import { Compra } from '@prisma/client';
 
 export const crearCompra = async (
   usuario_id: string,
-  pelicula_id: string,
-  monto: number
+  pelicula_id: string
 ): Promise<Compra> => {
-  // 1. Crear la compra
+  // Obtener la película
+  const pelicula = await prisma.pelicula.findUnique({
+    where: { id: pelicula_id },
+  });
+
+  if (!pelicula) {
+    throw new Error('Película no encontrada');
+  }
+
+  // Verificar si ya compró esta película
+  const compraExistente = await prisma.compra.findFirst({
+    where: {
+      usuario_id,
+      pelicula_id,
+    }
+  });
+
+  if (compraExistente) {
+    throw new Error('Ya has comprado esta película');
+  }
+
+  // Crear la compra
   const compra = await prisma.compra.create({
     data: {
       usuario_id,
       pelicula_id,
-      monto,
+      monto: pelicula.precio_compra,
     },
+    include: {
+      pelicula: true
+    }
   });
 
-  // 2. Registrar transacción asociada
+  // Registrar transacción asociada
   await prisma.transaccion.create({
     data: {
       usuario_id,
       pelicula_id,
       tipo: 'compra',
-      monto,
-      estado_pago: 'exitoso', // puede cambiarse si se usa una pasarela real
+      monto: pelicula.precio_compra,
+      estado_pago: 'exitoso',
     },
   });
 

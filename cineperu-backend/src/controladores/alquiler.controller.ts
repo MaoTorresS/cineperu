@@ -4,21 +4,29 @@ import * as alquilerService from '../servicios/alquiler.service';
 export const alquilarPelicula = async (req: Request, res: Response) => {
   try {
     const usuario_id = req.usuario?.id;
-    const { pelicula_id, fecha_fin } = req.body;
+    const { pelicula_id } = req.body;
 
-    if (!usuario_id || !pelicula_id || !fecha_fin) {
-      return res.status(400).json({ mensaje: 'Datos incompletos para alquilar' });
+    if (!usuario_id || !pelicula_id) {
+      return res.status(400).json({ 
+        mensaje: 'ID de película es requerido' 
+      });
     }
 
     const alquiler = await alquilerService.crearAlquiler(
       usuario_id,
-      pelicula_id,
-      new Date(fecha_fin)
+      pelicula_id
     );
 
-    res.status(201).json(alquiler);
-  } catch (error) {
+    res.status(201).json({
+      mensaje: 'Película alquilada exitosamente por 7 días',
+      alquiler
+    });
+  } catch (error: any) {
     console.error('Error al alquilar película:', error);
+    if (error.message === 'Película no encontrada' || 
+        error.message === 'Ya tienes un alquiler vigente de esta película') {
+      return res.status(400).json({ mensaje: error.message });
+    }
     res.status(500).json({ mensaje: 'Error interno del servidor' });
   }
 };
