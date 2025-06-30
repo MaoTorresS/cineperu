@@ -24,9 +24,16 @@ model Usuario {
   transacciones    Transaccion[]
 }
 
+enum EstadoPelicula {
+  DISPONIBLE
+  PROXIMAMENTE
+  AGOTADA
+  INACTIVA
+}
+
 model Pelicula {
   id               String       @id @default(uuid())
-  titulo           String
+  titulo           String       @unique
   sinopsis         String
   director         String
   genero           String[]
@@ -36,7 +43,7 @@ model Pelicula {
   fecha_estreno    DateTime
   precio_compra    Decimal
   precio_alquiler  Decimal
-  estado           String        @default("disponible") // disponible, proximamente, etc.
+  estado           EstadoPelicula @default(DISPONIBLE)
   creada_en        DateTime      @default(now())
 
   alquileres       Alquiler[]
