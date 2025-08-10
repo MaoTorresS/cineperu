@@ -1,11 +1,13 @@
 import { Request, Response } from 'express';
 import * as peliculaService from '../servicios/pelicula.service';
 
+// Controlador para listar películas
 export const listarPeliculas = async (_req: Request, res: Response) => {
   const peliculas = await peliculaService.listarPeliculas();
   res.json(peliculas);
 }; 
 
+// Controlador para obtener una película por ID
 export const obtenerPelicula = async (req: Request, res: Response) => {
   const { id } = req.params;
   const pelicula = await peliculaService.obtenerPelicula(id);
@@ -15,6 +17,7 @@ export const obtenerPelicula = async (req: Request, res: Response) => {
   res.json(pelicula);
 };
 
+// Controlador para registrar una nueva película
 export const registrarPelicula = async (req: Request, res: Response) => {
   try {
     const data = req.body;
@@ -26,6 +29,9 @@ export const registrarPelicula = async (req: Request, res: Response) => {
   }
 };
 
+// Controlador para editar una película
+// Recibe el ID de la película a editar y los nuevos datos en el cuerpo de la solicitud
+// Si la película no existe, devuelve un error 404
 export const editarPelicula = async (req: Request, res: Response) => {
   const { id } = req.params;
   const datos = req.body;
@@ -41,6 +47,8 @@ export const editarPelicula = async (req: Request, res: Response) => {
   }
 };
 
+// Controlador para borrar una película
+// Recibe el ID de la película a eliminar en los parámetros de la solicitud
 export const borrarPelicula = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {

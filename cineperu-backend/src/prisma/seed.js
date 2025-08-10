@@ -87,6 +87,32 @@ async function main() {
         precio_alquiler: 4.99,
         estado: "DISPONIBLE",
       },
+      {
+        titulo: "Blancanieves 2025",
+        sinopsis: "Una nueva adaptación del clásico cuento, más oscura y retorcida.",
+        director: "Sofia Luna",
+        genero: ["Fantasia", "Drama"],
+        duracion_minutos: 120,
+        portada_url: "/portadas/blancanieves2025.jpg",
+        trailer_url: "https://www.youtube.com/watch?v=abc123",
+        fecha_estreno: new Date("2025-11-01"),
+        precio_compra: 40,
+        precio_alquiler: 6,
+        estado: "DISPONIBLE"
+      },
+      {
+        titulo: "Shrek 5",
+        sinopsis: "El ogro favorito de todos regresa con nuevas locuras.",
+        director: "Walt Dohrn",
+        genero: ["Animación", "Comedia"],
+        duracion_minutos: 135,
+        portada_url: "/portadas/sherk5.jpg",
+        trailer_url: "https://www.youtube.com/watch?v=ghi012",
+        fecha_estreno: new Date("2025-08-10"),
+        precio_compra: 45.99,
+        precio_alquiler: 6.99,
+        estado: "DISPONIBLE",
+      }
     ];
 
     // Crear películas

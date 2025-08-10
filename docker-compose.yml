@@ -1,36 +1,35 @@
 services:
-  db:
+  db: # ← PRIMER SERVICIO (Base de datos)                        
     image: postgres:15
     container_name: cineperu_db
     restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 01deabril
-      POSTGRES_DB: cineperu_db
+      POSTGRES_DB: cineperu_db  # ← Crea la BD "cineperu_db"
     ports:
-      - "5432:5432"
+      - "5432:5432" # ← Puerto accesible desde afuera
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      - postgres_data:/var/lib/postgresql/data  # ← Persistencia de datos
+    healthcheck:  # ← Verifica que la base de datos esté lista, Comando para verificar la salud del servicio
+      test: ["CMD-SHELL", "pg_isready -U postgres"] # ← Comando para verificar la conexión
       interval: 10s
       timeout: 5s
       retries: 5
 
-  backend:
-    build: ./cineperu-backend
-    container_name: cineperu_backend
-    restart: unless-stopped
+  backend:  # ← SEGUNDO SERVICIO (Aplicación)
+    build: ./cineperu-backend # ← Ruta al Dockerfile de la aplicación
+    container_name: cineperu_backend 
+    restart: unless-stopped # ← Reinicia el contenedor si falla
     ports:
-      - "3000:3000"
+      - "3000:3000" # ← Puerto accesible desde afuera
     environment:
-      DATABASE_URL: postgresql://postgres:zBOEpCmUyJeyrZzzlBLAuFzNNBEhlZSt@metro.proxy.rlwy.net:30708/railway
-      JWT_SECRET: supersecreto123
-      NODE_ENV: development
+      DATABASE_URL: postgresql://postgres:01deabril@db:5432/cineperu_db # ← URL de conexión a la base de datos
+      JWT_SECRET: supersecreto123 # ← Clave secreta para JWT
+      NODE_ENV: development # ← Modo de entorno (desarrollo o producción)
     depends_on:
       db:
-        condition: service_healthy
+        condition: service_healthy  # ← Espera a que la base de datos esté lista
 
 volumes:
-  postgres_data:
-   
+  postgres_data: # ← Volumen para persistir datos de la base de datos

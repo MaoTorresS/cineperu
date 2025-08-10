@@ -38,6 +38,7 @@ const asyncHandler = (fn: (req: Request, res: Response, next: NextFunction) => P
 // GET /peliculas - Listar todas las películas
 // Esta ruta no requiere autenticación, por lo que no se protege
 router.get('/', asyncHandler(listarPeliculas));
+
 // GET /peliculas/:id - Obtener una película por su ID
 // Esta ruta no requiere autenticación, por lo que no se protege
 router.get('/:id', asyncHandler(obtenerPelicula));

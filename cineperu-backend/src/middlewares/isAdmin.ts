@@ -8,6 +8,7 @@ import { prisma } from '../prisma/client';
  * @param next - Función para pasar al siguiente middleware
  */
 
+// Este middleware verifica si el usuario autenticado tiene el rol de administrador
 export const isAdmin = async (req: any, res: Response, next: NextFunction): Promise<void> => {
   try {
     const userId = req.usuario.id; 
@@ -26,4 +27,4 @@ export const isAdmin = async (req: any, res: Response, next: NextFunction): Prom
     return; // Early return without value
   }
 };
-// Exportamos el middleware para usarlo en otras partes de la aplicación
+
