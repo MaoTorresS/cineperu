@@ -1,65 +1,37 @@
-import { Router, Request, Response, NextFunction } from 'express';
+
+import { Router } from 'express';
 import { protegerRuta } from '../middlewares/auth.middleware';
-import { prisma } from '../prisma/client';
+import { perfilUsuario, registrarUsuario, listarUsuarios, editarUsuario, cambiarEstadoUsuario, eliminarUsuario } from '../controladores/usuario.controller';
+import { isAdmin } from '../middlewares/isAdmin';
 
 const router = Router();
 
-// Wrapper para manejar funciones asíncronas
-const asyncHandler = (fn: (req: Request, res: Response, next: NextFunction) => Promise<any>) =>
-  (req: Request, res: Response, next: NextFunction) => {
-    Promise.resolve(fn(req, res, next)).catch(next);
-  };
+// Listar todos los usuarios (solo admin)
+router.get('/', protegerRuta, isAdmin, (req, res, next) => {
+  Promise.resolve(listarUsuarios(req, res)).catch(next);
+});
 
-// Obtener perfil del usuario
-router.get('/perfil', protegerRuta, asyncHandler(async (req: Request, res: Response) => {
-  const usuarioId = (req as any).usuario.id;
-  const usuario = await prisma.usuario.findUnique({
-    where: { id: usuarioId },
-    select: {
-      id: true,
-      nombre: true,
-      correo: true,
-      imagen_perfil: true,
-      rol: true,
-      creado_en: true,
-    },
-  });
+// Editar usuario (solo admin)
+router.put('/:id', protegerRuta, isAdmin, (req, res, next) => {
+  Promise.resolve(editarUsuario(req, res)).catch(next);
+});
 
-  if (!usuario) {
-    res.status(404).json({ mensaje: 'Usuario no encontrado' });
-    return;
-  }
+// Bloquear/desbloquear usuario (solo admin)
+router.patch('/:id/estado', protegerRuta, isAdmin, (req, res, next) => {
+  Promise.resolve(cambiarEstadoUsuario(req, res)).catch(next);
+});
 
-  res.json(usuario);
-}));
+// Eliminar usuario (solo admin)
+router.delete('/:id', protegerRuta, isAdmin, (req, res, next) => {
+  Promise.resolve(eliminarUsuario(req, res)).catch(next);
+});
 
-// Obtener historial completo del usuario (compras + alquileres)
-router.get('/historial', protegerRuta, asyncHandler(async (req: Request, res: Response) => {
-  const usuarioId = (req as any).usuario.id;
+// Registro de usuario
+router.post('/registrar', (req, res, next) => {
+  Promise.resolve(registrarUsuario(req, res)).catch(next);
+});
 
-  const [compras, alquileres] = await Promise.all([
-    prisma.compra.findMany({
-      where: { usuario_id: usuarioId },
-      include: { pelicula: true },
-      orderBy: { fecha_compra: 'desc' }
-    }),
-    prisma.alquiler.findMany({
-      where: { usuario_id: usuarioId },
-      include: { pelicula: true },
-      orderBy: { fecha_inicio: 'desc' }
-    })
-  ]);
-
-  res.json({
-    compras,
-    alquileres: alquileres.map(alquiler => ({
-      ...alquiler,
-      dias_restantes: Math.max(0, Math.ceil(
-        (new Date(alquiler.fecha_fin).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
-      )),
-      estado: new Date(alquiler.fecha_fin) > new Date() ? 'vigente' : 'vencido'
-    }))
-  });
-}));
+// Endpoint robusto de perfil de usuario (datos + historial)
+router.get('/perfil', protegerRuta, (req, res) => { perfilUsuario(req, res); });
 
 export default router;

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import * as alquilerService from '../servicios/alquiler.service';
 
+// crearAlquiler
 export const alquilarPelicula = async (req: Request, res: Response) => {
   try {
     const usuario_id = req.usuario?.id;

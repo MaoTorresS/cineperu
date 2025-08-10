@@ -1,27 +1,32 @@
 generator client {
   provider      = "prisma-client-js"
-  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
-
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model Usuario {
-  id               String         @id @default(uuid())
-  nombre           String
-  correo           String         @unique
-  contraseña       String?
-  imagen_perfil    String?
-  proveedor_google Boolean        @default(false)
-  rol              String         @default("usuario")
-  creado_en        DateTime       @default(now())
+enum RolUsuario {
+  ADMIN
+  USUARIO
+}
 
-  alquileres       Alquiler[]
-  compras          Compra[]
-  transacciones    Transaccion[]
+enum EstadoAlquiler {
+  PENDIENTE
+  FINALIZADO
+  CANCELADO
+  VENCIDO
+}
+
+enum EstadoPago {
+  PENDIENTE
+  EXITOSO
+  CANCELADO
+}
+
+enum TipoTransaccion {
+  ALQUILER
+  COMPRA
 }
 
 enum EstadoPelicula {
@@ -31,35 +36,64 @@ enum EstadoPelicula {
   INACTIVA
 }
 
-model Pelicula {
-  id               String       @id @default(uuid())
-  titulo           String       @unique
-  sinopsis         String
-  director         String
-  genero           String[]
-  duracion_minutos Int
-  portada_url      String
-  trailer_url      String
-  fecha_estreno    DateTime
-  precio_compra    Decimal
-  precio_alquiler  Decimal
-  estado           EstadoPelicula @default(DISPONIBLE)
-  creada_en        DateTime      @default(now())
+model Usuario {
+  id               String         @id @default(uuid())
+  nombre           String
+  apellido         String
+  correo           String         @unique
+  contraseña       String
+  imagen_perfil    String?
+  rol              RolUsuario     @default(USUARIO)
+  fecha_creacion   DateTime       @default(now())
+  activo           Boolean        @default(true) // Permite bloquear/desbloquear usuarios
 
   alquileres       Alquiler[]
   compras          Compra[]
   transacciones    Transaccion[]
+  carritos         Carrito[]
+}
+
+model Genero {
+  id          String     @id @default(uuid())
+  nombre      String     @unique
+  descripcion String?
+  peliculas   Pelicula[] @relation("GeneroPeliculas")
+}
+
+model Pelicula {
+  id               String       @id @default(uuid())
+  titulo           String       @unique
+  sinopsis         String
+  descripcion      String?
+  director         String
+  genero           Genero?      @relation("GeneroPeliculas", fields: [generoId], references: [id])
+  generoId         String?
+  duracion_minutos Int
+  cantidad         Int?
+  portada_url      String
+  trailer_url      String
+  fecha_estreno    DateTime
+  fecha_registro   DateTime      @default(now())
+  precio_compra    Decimal
+  precio_alquiler  Decimal
+  estado           EstadoPelicula @default(DISPONIBLE)
+
+  alquileres       Alquiler[]
+  compras          Compra[]
+  transacciones    Transaccion[]
+  carritos         Carrito[]
 }
 
 model Alquiler {
-  id             String     @id @default(uuid())
-  usuario        Usuario    @relation(fields: [usuario_id], references: [id])
+  id             String         @id @default(uuid())
+  usuario        Usuario        @relation(fields: [usuario_id], references: [id])
   usuario_id     String
-  pelicula       Pelicula   @relation(fields: [pelicula_id], references: [id])
+  pelicula       Pelicula       @relation(fields: [pelicula_id], references: [id])
   pelicula_id    String
-  fecha_inicio   DateTime   @default(now())
+  fecha_inicio   DateTime       @default(now())
   fecha_fin      DateTime
-  estado         String     @default("vigente") // vigente, vencido
+  dias_alquiler  Int            @default(7)
+  estado         EstadoAlquiler @default(PENDIENTE)
 }
 
 model Compra {
@@ -69,18 +103,30 @@ model Compra {
   pelicula       Pelicula   @relation(fields: [pelicula_id], references: [id])
   pelicula_id    String
   fecha_compra   DateTime   @default(now())
+  cantidad       Int        @default(1)
   monto          Decimal
 }
 
-model Transaccion {
-  id                String     @id @default(uuid())
-  usuario_id        String
-  pelicula_id       String
-  tipo              String
-  monto             Decimal
-  estado_pago       String
-  fecha_transaccion DateTime  @default(now())
 
-  usuario  Usuario   @relation(fields: [usuario_id], references: [id])
-  pelicula Pelicula  @relation(fields: [pelicula_id], references: [id])
+model Carrito {
+  id           String   @id @default(uuid())
+  usuario      Usuario  @relation(fields: [usuario_id], references: [id])
+  usuario_id   String
+  pelicula     Pelicula @relation(fields: [pelicula_id], references: [id])
+  pelicula_id  String
+  tipo         TipoTransaccion // 'COMPRA' o 'ALQUILER'
+  cantidad     Int      @default(1)
+  fecha_agregado DateTime @default(now())
+}
+
+model Transaccion {
+  id                String          @id @default(uuid())
+  usuario           Usuario         @relation(fields: [usuario_id], references: [id])
+  usuario_id        String
+  pelicula          Pelicula        @relation(fields: [pelicula_id], references: [id])
+  pelicula_id       String
+  tipo              TipoTransaccion
+  monto             Decimal
+  estado_pago       EstadoPago      @default(PENDIENTE)
+  fecha_transaccion DateTime        @default(now())
 }

@@ -9,22 +9,12 @@ import { prisma } from '../prisma/client';
  */
 
 // Este middleware verifica si el usuario autenticado tiene el rol de administrador
-export const isAdmin = async (req: any, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const userId = req.usuario.id; 
-    const user = await prisma.usuario.findUnique({
-      where: { id: userId }
-    });
 
-    if (!user || user.rol !== "admin") {
-      res.status(403).json({ error: "Acceso denegado: solo administradores." });
-      return; // Early return without value
-    }
-
-    next();
-  } catch (error) {
-    res.status(500).json({ error: "Error en verificación de administrador." });
-    return; // Early return without value
+export const isAdmin = (req: any, res: Response, next: NextFunction): void => {
+  if (!req.usuario || req.usuario.rol !== 'ADMIN') {
+    res.status(403).json({ error: 'Acceso denegado: solo administradores.' });
+    return;
   }
+  next();
 };
 

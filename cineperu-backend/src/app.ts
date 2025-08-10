@@ -2,12 +2,15 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { json } from 'express';
+
 import usuarioRuta from './rutas/usuario.ruta';
 import authRuta from './rutas/auth.ruta';
 import peliculaRuta from './rutas/pelicula.ruta';
 import compraRuta from './rutas/compra.ruta';
 import alquilerRuta from './rutas/alquiler.ruta';
 import transaccionRuta from './rutas/transaccion.ruta';
+import generoRuta from './rutas/genero.ruta';
+import carritoRuta from './rutas/carrito.ruta';
 
 // Cargar las variables de entorno desde el archivo .env
 dotenv.config();
@@ -32,8 +35,11 @@ app.use('/api/peliculas', peliculaRuta);
 
 app.use('/api/compras', compraRuta);
 
-app.use('/api/alquileres', alquilerRuta);
+app.use('/api/alquiler', alquilerRuta);
 
+
+app.use('/api/generos', generoRuta);
+app.use('/api/carrito', carritoRuta);
 app.use('/api/transacciones', transaccionRuta);
 
 // corremos el servidor en el puerto especificado en las variables de entorno o en el puerto 3000 por defecto

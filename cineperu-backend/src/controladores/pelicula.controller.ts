@@ -1,11 +1,28 @@
 import { Request, Response } from 'express';
 import * as peliculaService from '../servicios/pelicula.service';
 
-// Controlador para listar películas
-export const listarPeliculas = async (_req: Request, res: Response) => {
-  const peliculas = await peliculaService.listarPeliculas();
-  res.json(peliculas);
-}; 
+
+// Controlador para listar películas con paginación y búsqueda
+export const listarPeliculas = async (req: Request, res: Response) => {
+  const { page = 1, limit = 40, search = '', genero = '' } = req.query;
+  const pageNum = parseInt(page as string) || 1;
+  const limitNum = parseInt(limit as string) || 40;
+  const offset = (pageNum - 1) * limitNum;
+
+  const { peliculas, total } = await peliculaService.listarPeliculas({
+    search: search as string,
+    genero: genero as string,
+    skip: offset,
+    take: limitNum,
+  });
+
+  res.json({
+    peliculas,
+    total,
+    page: pageNum,
+    pages: Math.ceil(total / limitNum)
+  });
+};
 
 // Controlador para obtener una película por ID
 export const obtenerPelicula = async (req: Request, res: Response) => {
