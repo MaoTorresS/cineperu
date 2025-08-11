@@ -6,7 +6,7 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-// Crear una instancia de PrismaClient
+// Crear una instancia de PrismaClientC
 // Si ya existe una instancia en el entorno global, reutilizarla
 export const prisma = globalForPrisma.prisma ?? 
   new PrismaClient({
