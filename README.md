@@ -196,11 +196,6 @@ cd cineperu
 ```bash
 docker compose up -d
 ```
-- API Node.js en `http://localhost:3000`
-- PostgreSQL en `localhost:5432`  
-  Usuario: `postgres`  
-  Password: `01deabril`  
-  DB: `postgres`
 
 #### 3️⃣ Iniciar el frontend
 ```bash
@@ -241,24 +236,12 @@ npm run preview               # Vista previa del build
 
 1. **Crear cuenta en [Railway](https://railway.app)**
 2. **Crear nuevo proyecto PostgreSQL**
-3. **DATABASE_URL obtenida de Railway:**
-   ```env
-   DATABASE_URL=postgresql://postgres:zBOEpCmUyJeyrZzzlBLAuFzNNBEhlZSt@metro.proxy.rlwy.net:30708/railway
-   ```
-4. **Copiar esta URL para usar en Render**
 
 ### �🚀 Backend - Render (Segundo paso)
 
 1. **Crear cuenta en [Render](https://render.com)**
 2. **Conectar repositorio de GitHub**
 3. **Seleccionar carpeta del backend:** `cineperu-backend`
-4. **Configurar variables de entorno en Render:**
-   ```env
-   DATABASE_URL=postgresql://postgres:zBOEpCmUyJeyrZzzlBLAuFzNNBEhlZSt@metro.proxy.rlwy.net:30708/railway
-   JWT_SECRET=supersecreto123
-   NODE_ENV=production
-   PORT=3000
-   ```
 5. **Configurar Build Command:**
    ```bash
    npm install && npm run build
@@ -291,25 +274,6 @@ npx prisma db seed
    ```env
    VITE_API_URL=https://cineperu-backend.onrender.com
    ```
-
-### 📄 Configuración del Frontend para Producción
-
-**Archivo: `src/api/axios.ts`**
-```typescript
-import axios from 'axios'; 
-
-const API = axios.create({
-  baseURL: 'https://cineperu-backend.onrender.com/api',
-});
-
-export default API;
-```
-
-### 🔗 URLs finales en producción
-
-- **🎨 Frontend (Vercel):** `https://cineperu.vercel.app`
-- **🚀 Backend API (Render):** `https://cineperu-backend.onrender.com`
-- **🗄️ Base de Datos (Railway):** `postgresql://postgres:zBOEpCmUyJeyrZzzlBLAuFzNNBEhlZSt@metro.proxy.rlwy.net:30708/railway`
 
 ### 🔄 Flujo de despliegue
 
@@ -413,28 +377,6 @@ cineperu/
 
 ---
 
-## 🧪 Testing y Desarrollo
-
-### Variables de entorno requeridas
-
-#### Backend (.env)
-```env
-DATABASE_URL="postgresql://postgres:zBOEpCmUyJeyrZzzlBLAuFzNNBEhlZSt@metro.proxy.rlwy.net:30708/railway"
-JWT_SECRET="supersecreto123"
-PORT=3000
-NODE_ENV=development
-```
-
-#### Frontend (.env)
-```env
-VITE_API_URL=http://localhost:3000
-```
-
-#### Frontend (producción)
-```env
-VITE_API_URL=https://cineperu-backend.onrender.com
-```
-
 ### 🔧 Troubleshooting común
 
 **Error de conexión a la base de datos:**
@@ -464,7 +406,7 @@ npx prisma db push
 
 ## � Licencia
 
-MIT License GRUPO 03
+MIT License GRUPO 02
 
 ---
 
