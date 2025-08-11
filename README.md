@@ -1,5 +1,5 @@
 #
-# 🎬 CinePerú - v1.0.0
+# 🎬 CinePerú - v2.0.0
 
 ## 🧾 1. Descripción del Proyecto – CinePerú
 
@@ -20,7 +20,7 @@ CinePerú es una plataforma de streaming y gestión de películas que permite a 
 **Funciones principales del sistema:**
 • Registro con correo y autenticación con Google  
 • Navegación pública sin registro  
-• Compra o alquiler de películas  
+• Compra o alquiler de películas (sin integración de pasarela de pagos, solo simulado)  
 • Visualización del historial de compras y alquileres  
 • Verificación del estado de alquiler (vigente o vencido)  
 • Edición del perfil de usuario  
@@ -67,12 +67,13 @@ CinePerú es una plataforma de streaming y gestión de películas que permite a 
   - Usuario estándar (por defecto)  
   - Administrador (gestiona películas, usuarios, etc.)  
 
-### 💳 Gestión de pagos
+### 💳 Gestión de pagos (simulada)
 
 • Moneda: Soles peruanos (PEN)  
-• Integración planificada con pasarelas como Mercado Pago o Yape  
-• Registro de transacciones exitosas  
-• Verificación del vencimiento en los alquileres  
+• Actualmente **NO** hay integración real con pasarelas de pago (Mercado Pago, Yape, etc.)
+• El flujo de compra y alquiler es simulado para efectos de pruebas y experiencia de usuario.
+• Registro de transacciones exitosas (simuladas)
+• Verificación del vencimiento en los alquileres
 
 ### 📱 Diseño responsivo
 
