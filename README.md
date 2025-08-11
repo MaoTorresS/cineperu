@@ -25,7 +25,23 @@ CinePerú es una plataforma de streaming y gestión de películas que permite a 
 • Verificación del estado de alquiler (vigente o vencido)  
 • Edición del perfil de usuario  
 
-### 💻 Tecnologías utilizadas
+### � Novedades CI/CD y Automatización
+
+- **CI/CD profesional:**
+  - GitHub Actions para lint, test y build en frontend y backend.
+  - Deploy automático del backend en Render solo si pasan los tests.
+  - Deploy del frontend en Vercel.
+  - Railway solo como base de datos (sin deploy automático de backend).
+- **Automatización y calidad:**
+  - Linting y type-checking estrictos con ESLint y TypeScript.
+  - Validación de tests antes de cada deploy.
+  - Separación de contextos React para Fast Refresh.
+  - Uso de hooks y tipado seguro en todo el frontend.
+- **Despliegue seguro:**
+  - El backend solo se despliega si los tests pasan (ver `.github/workflows/ci.yml`).
+  - El frontend se despliega automáticamente en Vercel.
+
+### �💻 Tecnologías utilizadas
 
 | Categoría | Tecnología |
 |-----------|------------|

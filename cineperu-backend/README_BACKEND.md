@@ -45,3 +45,16 @@ docker-compose up --build
 ```
 
 ---
+
+## 🚀 Despliegue y CI/CD
+
+- El backend se despliega automáticamente en [Render](https://render.com) usando un Deploy Hook.
+- El deploy solo ocurre si los tests y el build pasan en GitHub Actions.
+- La base de datos está en Railway, pero Railway **no** hace deploy del backend.
+- Puedes ver el flujo en `.github/workflows/ci.yml`.
+
+## 🧪 Calidad y pruebas
+
+- Linting y type-checking automáticos en cada push.
+- Tests automáticos antes de cada deploy.
+- Arquitectura desacoplada y dockerizada.
