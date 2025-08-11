@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import API from '../api/axios';
 import { useAuth } from '../context/AuthContext';
-import NavBar from '../components/NavBar';
+import MainHeader from '../components/MainHeader';
 
+import type { User } from '../context/AuthContext';
 type LoginResponse = {
   token: string;
+  usuario: User;
 };
 
 export default function LoginPage() {
@@ -21,7 +23,7 @@ export default function LoginPage() {
 
     try {
       const res = await API.post<LoginResponse>('/auth/login', { correo, contraseña });
-      login(res.data.token);
+  login(res.data.token, res.data.usuario);
       navigate('/');
     } catch (err: any) {
       console.error('Error al hacer login:', err);
@@ -31,7 +33,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <NavBar />
+  <MainHeader />
       <div className="flex min-h-full flex-col justify-center px-6 py-12 bg-gray-50 dark:bg-gray-900">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img

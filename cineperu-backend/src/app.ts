@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { json } from 'express';
@@ -19,6 +20,9 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(json());
+
+// Servir la carpeta de portadas como pública
+app.use('/assets/portadas', express.static(path.join(__dirname, '../assets/portadas')));
 
 // Ruta raíz de la API
 app.get('/api', (_req, res) => {

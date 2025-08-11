@@ -6,12 +6,28 @@ export const agregarAlCarrito = async (
   tipo: 'COMPRA' | 'ALQUILER',
   cantidad: number = 1
 ) => {
+  // Obtener la película y validar stock
+  const pelicula = await prisma.pelicula.findUnique({ where: { id: pelicula_id } });
+  if (!pelicula) throw new Error('Película no encontrada');
+  if (pelicula.cantidad !== null && pelicula.cantidad !== undefined && cantidad > pelicula.cantidad) {
+    throw new Error('No hay suficiente cantidad disponible');
+  }
+
   // Verificar si ya existe en el carrito
   const existente = await prisma.carrito.findFirst({
     where: { usuario_id, pelicula_id, tipo },
   });
   if (existente) {
-    throw new Error('La película ya está en el carrito');
+    // Sumar cantidad, pero no exceder el stock
+    const nuevaCantidad = existente.cantidad + cantidad;
+    if (pelicula.cantidad !== null && pelicula.cantidad !== undefined && nuevaCantidad > pelicula.cantidad) {
+      throw new Error('No hay suficiente cantidad disponible');
+    }
+    return prisma.carrito.update({
+      where: { id: existente.id },
+      data: { cantidad: nuevaCantidad },
+      include: { pelicula: true },
+    });
   }
   return prisma.carrito.create({
     data: { usuario_id, pelicula_id, tipo, cantidad },

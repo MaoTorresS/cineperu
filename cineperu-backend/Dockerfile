@@ -47,8 +47,9 @@ COPY entrypoint.sh ./
 RUN sed -i 's/\r$//' entrypoint.sh && \
     chmod +x entrypoint.sh
 
-# Crear directorio para uploads
-RUN mkdir -p uploads
+
+# Crear directorio para portadas
+RUN mkdir -p assets/portadas
 
 # Usuario no root para ejecutar la aplicación
 RUN addgroup -g 1001 -S nodejs && \

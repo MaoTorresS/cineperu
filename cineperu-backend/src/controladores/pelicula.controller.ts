@@ -38,6 +38,16 @@ export const obtenerPelicula = async (req: Request, res: Response) => {
 export const registrarPelicula = async (req: Request, res: Response) => {
   try {
     const data = req.body;
+    // Si se subió archivo, guardar la ruta pública
+    if (req.file) {
+      data.portada_url = `/assets/portadas/${req.file.filename}`;
+    }
+    // Convertir campos numéricos y fecha
+    if (data.duracion_minutos !== undefined) data.duracion_minutos = Number(data.duracion_minutos);
+    if (data.cantidad !== undefined) data.cantidad = Number(data.cantidad);
+    if (data.precio_compra !== undefined) data.precio_compra = Number(data.precio_compra);
+    if (data.precio_alquiler !== undefined) data.precio_alquiler = Number(data.precio_alquiler);
+    if (data.fecha_estreno) data.fecha_estreno = new Date(data.fecha_estreno);
     const nueva = await peliculaService.crearPelicula(data);
     res.status(201).json(nueva);
   } catch (error) {
@@ -53,6 +63,16 @@ export const editarPelicula = async (req: Request, res: Response) => {
   const { id } = req.params;
   const datos = req.body;
   try {
+    // Si se subió archivo, guardar la ruta pública
+    if (req.file) {
+      datos.portada_url = `/assets/portadas/${req.file.filename}`;
+    }
+    // Convertir campos numéricos y fecha
+    if (datos.duracion_minutos !== undefined) datos.duracion_minutos = Number(datos.duracion_minutos);
+    if (datos.cantidad !== undefined) datos.cantidad = Number(datos.cantidad);
+    if (datos.precio_compra !== undefined) datos.precio_compra = Number(datos.precio_compra);
+    if (datos.precio_alquiler !== undefined) datos.precio_alquiler = Number(datos.precio_alquiler);
+    if (datos.fecha_estreno) datos.fecha_estreno = new Date(datos.fecha_estreno);
     const pelicula = await peliculaService.editarPelicula(id, datos);
     if (!pelicula) {
       return res.status(404).json({ mensaje: 'Película no encontrada' });
