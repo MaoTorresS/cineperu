@@ -53,7 +53,8 @@ export const registrarPelicula = async (req: Request, res: Response) => {
     res.status(201).json(nueva);
   } catch (error) {
   const errMsg = (error as any)?.message || error;
-  console.error('Error al crear película:', errMsg, error);
+  console.error('Error al crear película:', errMsg);
+  try { console.error('Error JSON:', JSON.stringify(error)); } catch {}
   res.status(500).json({ mensaje: 'Error interno al crear película', error: errMsg });
   }
 };
@@ -83,7 +84,8 @@ export const editarPelicula = async (req: Request, res: Response) => {
     res.json(pelicula);
   } catch (error) {
   const errMsg = (error as any)?.message || error;
-  console.error('Error al editar película:', errMsg, error);
+  console.error('Error al editar película:', errMsg);
+  try { console.error('Error JSON:', JSON.stringify(error)); } catch {}
   res.status(500).json({ mensaje: 'Error al editar película', error: errMsg });
   }
 };
