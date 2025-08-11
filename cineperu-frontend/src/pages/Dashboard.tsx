@@ -79,7 +79,7 @@ const Dashboard: React.FC = () => {
               className="dashboard-card"
               onClick={() => handleMovieClick(movie.id)}
             >
-              <img src={movie.portada_url && movie.portada_url.startsWith('/assets/portadas/') ? `http://localhost:3000${movie.portada_url}` : movie.portada_url} alt={movie.titulo} />
+              <img src={movie.portada_url} alt={movie.titulo} />
               <span className="dashboard-badge">Nuevo</span>
             </div>
           ))}
@@ -96,7 +96,7 @@ const Dashboard: React.FC = () => {
               className="dashboard-card"
               onClick={() => handleMovieClick(movie.id)}
             >
-              <img src={movie.portada_url && movie.portada_url.startsWith('/assets/portadas/') ? `http://localhost:3000${movie.portada_url}` : movie.portada_url} alt={movie.titulo} />
+              <img src={movie.portada_url} alt={movie.titulo} />
             </div>
           ))}
         </div>

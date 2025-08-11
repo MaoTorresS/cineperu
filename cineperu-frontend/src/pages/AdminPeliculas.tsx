@@ -127,7 +127,7 @@ const AdminPeliculas: React.FC<{ onEdit?: (pelicula: any) => void }> = () => {
           {peliculas.map((p) => (
             <div key={p.id} className="movie-card" tabIndex={0} role="button" aria-label={p.titulo}>
               <div className="movie-image">
-                <img src={p.portada_url && p.portada_url.startsWith('/assets/portadas/') ? `http://localhost:3000${p.portada_url}` : p.portada_url} alt={p.titulo} />
+                <img src={p.portada_url} alt={p.titulo} />
               </div>
               <div className="movie-title" title={p.titulo}>{p.titulo}</div>
               {p.genero && <div className="movie-meta">{typeof p.genero === 'string' ? p.genero : p.genero.nombre}</div>}

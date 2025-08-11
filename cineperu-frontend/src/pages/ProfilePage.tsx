@@ -119,7 +119,7 @@ const ProfilePage: React.FC = () => {
           {compras.length === 0 && <div style={{ gridColumn: '1/-1', color: '#aaa', textAlign: 'center' }}>No tienes compras registradas.</div>}
           {compras.map((c) => (
             <div key={c.id} style={{ background: '#23232b', borderRadius: 10, padding: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0 2px 8px 0 rgba(0,0,0,0.10)' }}>
-              <img src={c.pelicula.portada_url && c.pelicula.portada_url.startsWith('/assets/portadas/') ? `http://localhost:3000${c.pelicula.portada_url}` : c.pelicula.portada_url} alt={c.pelicula.titulo} style={{ width: 54, height: 78, objectFit: 'cover', borderRadius: 8, marginBottom: 6 }} />
+              <img src={c.pelicula.portada_url} alt={c.pelicula.titulo} style={{ width: 54, height: 78, objectFit: 'cover', borderRadius: 8, marginBottom: 6 }} />
               <div style={{ fontWeight: 600, color: '#fff', fontSize: 13, textAlign: 'center', marginBottom: 2 }}>{c.pelicula.titulo}</div>
               <div style={{ color: '#22c55e', fontSize: 12, fontWeight: 500 }}>{c.tipo}</div>
               <div style={{ color: '#aaa', fontSize: 11 }}>{new Date(c.fecha).toLocaleDateString()}</div>
@@ -134,7 +134,7 @@ const ProfilePage: React.FC = () => {
           {alquileres.length === 0 && <div style={{ gridColumn: '1/-1', color: '#aaa', textAlign: 'center' }}>No tienes alquileres activos.</div>}
           {alquileres.map((a) => (
             <div key={a.id} style={{ background: '#23232b', borderRadius: 10, padding: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0 2px 8px 0 rgba(0,0,0,0.10)' }}>
-              <img src={a.pelicula.portada_url && a.pelicula.portada_url.startsWith('/assets/portadas/') ? `http://localhost:3000${a.pelicula.portada_url}` : a.pelicula.portada_url} alt={a.pelicula.titulo} style={{ width: 54, height: 78, objectFit: 'cover', borderRadius: 8, marginBottom: 6 }} />
+              <img src={a.pelicula.portada_url} alt={a.pelicula.titulo} style={{ width: 54, height: 78, objectFit: 'cover', borderRadius: 8, marginBottom: 6 }} />
               <div style={{ fontWeight: 600, color: '#fff', fontSize: 13, textAlign: 'center', marginBottom: 2 }}>{a.pelicula.titulo}</div>
               <div style={{ color: '#3b82f6', fontSize: 12, fontWeight: 500 }}>{a.tipo}</div>
               <div style={{ color: '#aaa', fontSize: 11 }}>{new Date(a.fecha).toLocaleDateString()}</div>

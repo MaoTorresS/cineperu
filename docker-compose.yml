@@ -27,8 +27,6 @@ services:
       DATABASE_URL: postgresql://postgres:01deabril@db:5432/cineperu_db # ← URL de conexión a la base de datos
       JWT_SECRET: supersecreto123 # ← Clave secreta para JWT
       NODE_ENV: development # ← Modo de entorno (desarrollo o producción)
-    volumes:
-      - ./cineperu-backend/assets/portadas:/app/assets/portadas
     depends_on:
       db:
         condition: service_healthy  # ← Espera a que la base de datos esté lista
