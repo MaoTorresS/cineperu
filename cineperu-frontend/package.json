@@ -8,6 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
+  ,   
+  "test": "echo 'No hay tests configurados aún'"
   },
   "dependencies": {
     "axios": "^1.10.0",
