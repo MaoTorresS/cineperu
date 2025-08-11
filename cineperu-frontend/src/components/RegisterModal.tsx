@@ -76,8 +76,12 @@ const RegisterModal: React.FC<{ open: boolean; onClose: () => void }> = ({ open,
   login(loginRes.data.token, loginRes.data.usuario);
   setLoading(false);
   onClose();
-    } catch (err: any) {
-      setError(err.response?.data?.error || "Error al registrar");
+    } catch (err: unknown) {
+      if (typeof err === 'object' && err !== null && 'response' in err && typeof (err as any).response?.data?.error === 'string') {
+        setError((err as any).response.data.error);
+      } else {
+        setError("Error al registrar");
+      }
       setLoading(false);
     }
   };

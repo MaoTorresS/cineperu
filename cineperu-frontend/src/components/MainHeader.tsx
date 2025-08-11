@@ -23,7 +23,9 @@ const menuItemStyle: React.CSSProperties = {
   outline: 'none',
 };
 
-const UserDropdown: React.FC<{ user: any }> = ({ user }) => {
+import type { User } from "../context/AuthContext";
+
+const UserDropdown: React.FC<{ user: User }> = ({ user }) => {
   const [open, setOpen] = React.useState(false);
   const { logout } = useAuth();
   const confirm = useConfirm();

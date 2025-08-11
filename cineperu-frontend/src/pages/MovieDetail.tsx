@@ -62,8 +62,20 @@ const MovieDetail: React.FC = () => {
         headers: token ? { Authorization: `Bearer ${token}` } : undefined
       });
       navigate('/carrito');
-    } catch (err: any) {
-      const msg = err?.response?.data?.mensaje || err?.response?.data?.error || 'No se pudo agregar al carrito. Intenta nuevamente.';
+    } catch (err: unknown) {
+      let msg = 'No se pudo agregar al carrito. Intenta nuevamente.';
+      if (
+        err &&
+        typeof err === 'object' &&
+        'response' in err &&
+        err.response &&
+        typeof (err as any).response === 'object' &&
+        'data' in (err as any).response &&
+        (err as any).response.data &&
+        typeof (err as any).response.data === 'object'
+      ) {
+        msg = (err as any).response.data.mensaje || (err as any).response.data.error || msg;
+      }
       if (msg === 'La película ya está en el carrito') {
         setNotify({
           text: msg,

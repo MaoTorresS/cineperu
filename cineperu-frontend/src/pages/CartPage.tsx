@@ -80,9 +80,12 @@ const CartPage: React.FC = () => {
         setSuccess('');
         navigate('/');
       }, 2200);
-    } catch (err: any) {
-      const msg = err?.response?.data?.mensaje || 'No se pudo realizar el pago';
-      setError(msg);
+    } catch (err: unknown) {
+      if (typeof err === 'object' && err !== null && 'response' in err && typeof (err as any).response?.data?.mensaje === 'string') {
+        setError((err as any).response.data.mensaje);
+      } else {
+        setError('No se pudo realizar el pago');
+      }
     }
   };
 

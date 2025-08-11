@@ -27,6 +27,8 @@ jobs:
       - name: Test (opcional)
         run: |
           if npm run | grep -q 'test'; then npm test; else echo "No test script"; fi
+        env:
+          DATABASE_URL: "postgresql://postgres:zBOEpCmUyJeyrZzzlBLAuFzNNBEhlZSt@metro.proxy.rlwy.net:30708/railway"
       - name: Build
         run: npm run build
 

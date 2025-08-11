@@ -1,30 +1,31 @@
+
 import React, { useEffect, useState } from "react";
 import API from "../api/axios";
 import MovieCard from "../components/MovieCard";
 import "../styles/movie.css";
 
+interface Pelicula {
+  id: string;
+  titulo: string;
+  portada_url: string;
+  genero?: { nombre: string } | string;
+  precio_compra?: string;
+}
+
+
 const SearchPage: React.FC = () => {
   // const [query, setQuery] = useState("");
-  const [peliculas, setPeliculas] = useState<any[]>([]);
+  const [peliculas, setPeliculas] = useState<Pelicula[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    interface Pelicula {
-      id: string;
-      titulo: string;
-      portada_url: string;
-      // otros campos si es necesario
-    }
-    interface ApiResponse {
-      peliculas: Pelicula[];
-    }
     const fetchPeliculas = async () => {
       const params = new URLSearchParams(window.location.search);
       const q = params.get("q") || "";
       if (q) {
         setLoading(true);
         try {
-          const res = await API.get<ApiResponse>(`/peliculas?search=${encodeURIComponent(q)}`);
+          const res = await API.get<{ peliculas: Pelicula[] }>(`/peliculas?search=${encodeURIComponent(q)}`);
           setPeliculas(res.data.peliculas || []);
         } catch {
           setPeliculas([]);
@@ -55,7 +56,7 @@ const SearchPage: React.FC = () => {
                 key={p.id}
                 titulo={p.titulo}
                 portada_url={p.portada_url}
-                genero={p.genero?.nombre || p.genero || ''}
+                genero={typeof p.genero === 'object' && p.genero !== null ? p.genero.nombre : (p.genero || '')}
                 precio_compra={p.precio_compra}
                 onClick={() => window.location.href = `/pelicula/${p.id}`}
               />

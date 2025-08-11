@@ -28,8 +28,12 @@ const LoginModal: React.FC<{ open: boolean; onClose: () => void }> = ({ open, on
       const res = await API.post<LoginResponse>("/auth/login", { correo, contrasena });
   login(res.data.token, res.data.usuario);
   onClose();
-    } catch (err: any) {
-      setError(err.response?.data?.error || "Error al iniciar sesión");
+    } catch (err: unknown) {
+      if (typeof err === 'object' && err !== null && 'response' in err && typeof (err as any).response?.data?.error === 'string') {
+        setError((err as any).response.data.error);
+      } else {
+        setError("Error al iniciar sesión");
+      }
     }
   };
 

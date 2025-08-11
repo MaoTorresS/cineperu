@@ -2,9 +2,19 @@
 import React from 'react';
 import MovieCard from '../components/MovieCard';
 
+interface PeliculaGridItem {
+  pelicula: {
+    id: string;
+    titulo: string;
+    portada_url: string;
+    // Puedes agregar más campos si los usas en MovieCard
+  };
+  tipo: string;
+}
+
 const MisPeliculasGrid: React.FC<{
-  peliculas: any[];
-  onCardClick?: (pelicula: any) => void;
+  peliculas: PeliculaGridItem[];
+  onCardClick?: (pelicula: PeliculaGridItem["pelicula"]) => void;
 }> = ({ peliculas, onCardClick }) => (
   <div className="movie-search-grid">
     {peliculas.map((item) => (

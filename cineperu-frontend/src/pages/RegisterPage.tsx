@@ -28,8 +28,22 @@ export default function RegisterPage() {
   login(loginRes.data.token, loginRes.data.usuario);
 // ...existing code...
       navigate('/');
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Error al registrar');
+    } catch (err: unknown) {
+      if (
+        err &&
+        typeof err === 'object' &&
+        'response' in err &&
+        err.response &&
+        typeof (err as any).response === 'object' &&
+        'data' in (err as any).response &&
+        (err as any).response.data &&
+        typeof (err as any).response.data === 'object' &&
+        'error' in (err as any).response.data
+      ) {
+        setError((err as any).response.data.error || 'Error al registrar');
+      } else {
+        setError('Error al registrar');
+      }
     }
   };
 

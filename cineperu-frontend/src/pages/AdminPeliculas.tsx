@@ -23,13 +23,41 @@ interface Pelicula {
 }
 
 
-const AdminPeliculas: React.FC<{ onEdit?: (pelicula: any) => void }> = () => {
+type EditFormType = {
+  titulo: string;
+  sinopsis: string;
+  descripcion: string;
+  director: string;
+  generoId: string;
+  duracion_minutos: string;
+  cantidad: string;
+  trailer_url: string;
+  fecha_estreno: string;
+  precio_compra: string;
+  precio_alquiler: string;
+  estado: string;
+};
+
+const AdminPeliculas: React.FC<{ onEdit?: (pelicula: Pelicula) => void }> = () => {
   const { token } = useAuth();
   const [peliculas, setPeliculas] = useState<Pelicula[]>([]);
   const [loading, setLoading] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
   const [editData, setEditData] = useState<Pelicula | null>(null);
-  const [editForm, setEditForm] = useState<any>({});
+  const [editForm, setEditForm] = useState<EditFormType>({
+    titulo: '',
+    sinopsis: '',
+    descripcion: '',
+    director: '',
+    generoId: '',
+    duracion_minutos: '',
+    cantidad: '',
+    trailer_url: '',
+    fecha_estreno: '',
+    precio_compra: '',
+    precio_alquiler: '',
+    estado: 'DISPONIBLE',
+  });
   const [editPortada, setEditPortada] = useState<File | null>(null);
   const [editMsg, setEditMsg] = useState('');
   const [editLoading, setEditLoading] = useState(false);
@@ -53,17 +81,17 @@ const AdminPeliculas: React.FC<{ onEdit?: (pelicula: any) => void }> = () => {
     setEditData(p);
     setEditForm({
       titulo: p.titulo || '',
-      sinopsis: (p as any).sinopsis || '',
-      descripcion: (p as any).descripcion || '',
-      director: (p as any).director || '',
-      generoId: typeof p.genero === 'object' && p.genero ? (p.genero as any).id : '',
-      duracion_minutos: p.duracion_minutos || '',
-      cantidad: p.cantidad || '',
-      trailer_url: (p as any).trailer_url || '',
+      sinopsis: p.sinopsis || '',
+      descripcion: p.descripcion || '',
+      director: p.director || '',
+      generoId: typeof p.genero === 'object' && p.genero ? (p.genero as { id: string }).id : '',
+      duracion_minutos: p.duracion_minutos ? String(p.duracion_minutos) : '',
+      cantidad: p.cantidad ? String(p.cantidad) : '',
+      trailer_url: p.trailer_url || '',
       fecha_estreno: p.fecha_estreno ? p.fecha_estreno.slice(0,10) : '',
-      precio_compra: p.precio_compra || '',
-      precio_alquiler: (p as any).precio_alquiler || '',
-      estado: (p as any).estado || 'DISPONIBLE',
+      precio_compra: p.precio_compra ? String(p.precio_compra) : '',
+      precio_alquiler: p.precio_alquiler ? String(p.precio_alquiler) : '',
+      estado: p.estado || 'DISPONIBLE',
     });
     setEditPortada(null);
     setEditMsg('');
@@ -131,7 +159,7 @@ const AdminPeliculas: React.FC<{ onEdit?: (pelicula: any) => void }> = () => {
               </div>
               <div className="movie-title" title={p.titulo}>{p.titulo}</div>
               {p.genero && <div className="movie-meta">{typeof p.genero === 'string' ? p.genero : p.genero.nombre}</div>}
-              {p.precio_compra && <div className="movie-price movie-price-center">S/ {parseFloat(p.precio_compra as any).toFixed(2)}</div>}
+              {p.precio_compra && <div className="movie-price movie-price-center">S/ {parseFloat(String(p.precio_compra)).toFixed(2)}</div>}
               <div style={{ flex: 1 }} />
               <button className="movie-btn" style={{ background: '#e5b100', color: '#18181b', fontWeight: 700 }} onClick={() => openEdit(p)}>Editar</button>
             </div>

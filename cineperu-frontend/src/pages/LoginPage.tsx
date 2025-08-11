@@ -25,9 +25,23 @@ export default function LoginPage() {
       const res = await API.post<LoginResponse>('/auth/login', { correo, contraseña });
   login(res.data.token, res.data.usuario);
       navigate('/');
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error al hacer login:', err);
-      setError(err.response?.data?.error || 'Error al iniciar sesión');
+      if (
+        err &&
+        typeof err === 'object' &&
+        'response' in err &&
+        err.response &&
+        typeof (err as any).response === 'object' &&
+        'data' in (err as any).response &&
+        (err as any).response.data &&
+        typeof (err as any).response.data === 'object' &&
+        'error' in (err as any).response.data
+      ) {
+        setError((err as any).response.data.error || 'Error al iniciar sesión');
+      } else {
+        setError('Error al iniciar sesión');
+      }
     }
   };
 
