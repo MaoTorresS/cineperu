@@ -52,8 +52,9 @@ export const registrarPelicula = async (req: Request, res: Response) => {
     const nueva = await peliculaService.crearPelicula(data);
     res.status(201).json(nueva);
   } catch (error) {
-    console.error('Error al crear película:', error);
-    res.status(500).json({ mensaje: 'Error interno al crear película' });
+  const errMsg = (error as any)?.message || error;
+  console.error('Error al crear película:', errMsg, error);
+  res.status(500).json({ mensaje: 'Error interno al crear película', error: errMsg });
   }
 };
 
@@ -81,8 +82,9 @@ export const editarPelicula = async (req: Request, res: Response) => {
     }
     res.json(pelicula);
   } catch (error) {
-    console.error('Error al editar película:', error);
-    res.status(500).json({ mensaje: 'Error al editar película' });
+  const errMsg = (error as any)?.message || error;
+  console.error('Error al editar película:', errMsg, error);
+  res.status(500).json({ mensaje: 'Error al editar película', error: errMsg });
   }
 };
 

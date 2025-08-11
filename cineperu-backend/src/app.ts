@@ -22,13 +22,6 @@ app.use(cors());
 app.use(json());
 
 
-// Servir imágenes de portadas
-app.use('/api/portadas', express.static(path.join(__dirname, '../assets/portadas')));
-
-
-// Servir la carpeta de portadas como pública
-app.use('/assets/portadas', express.static(path.join(__dirname, '../assets/portadas')));
-
 // Ruta raíz de la API
 app.get('/api', (_req, res) => {
   res.json({ mensaje: '🎬 Bienvenido a la API de CinePerú' });
