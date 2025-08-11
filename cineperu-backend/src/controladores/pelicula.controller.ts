@@ -40,7 +40,8 @@ export const registrarPelicula = async (req: Request, res: Response) => {
     const data = req.body;
     // Si se subió archivo, guardar la ruta pública
     if (req.file) {
-      data.portada_url = `/api/portadas/${req.file.filename}`;
+      // Cloudinary: la URL pública está en req.file.path
+      data.portada_url = req.file.path;
     }
     // Convertir campos numéricos y fecha
     if (data.duracion_minutos !== undefined) data.duracion_minutos = Number(data.duracion_minutos);
@@ -65,7 +66,8 @@ export const editarPelicula = async (req: Request, res: Response) => {
   try {
     // Si se subió archivo, guardar la ruta pública
     if (req.file) {
-      datos.portada_url = `/api/portadas/${req.file.filename}`;
+      // Cloudinary: la URL pública está en req.file.path
+      datos.portada_url = req.file.path;
     }
     // Convertir campos numéricos y fecha
     if (datos.duracion_minutos !== undefined) datos.duracion_minutos = Number(datos.duracion_minutos);
