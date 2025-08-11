@@ -1,4 +1,4 @@
-
+#
 # 🎬 CinePerú - v1.0.0
 
 ## 🧾 1. Descripción del Proyecto – CinePerú
