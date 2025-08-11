@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import type { User } from "../context/AuthContext";
+import type { User } from "../context/AuthContextDef";
 import API from "../api/axios";
 
 const LoginModal: React.FC<{ open: boolean; onClose: () => void }> = ({ open, onClose }) => {
@@ -29,10 +29,23 @@ const LoginModal: React.FC<{ open: boolean; onClose: () => void }> = ({ open, on
   login(res.data.token, res.data.usuario);
   onClose();
     } catch (err: unknown) {
-      if (typeof err === 'object' && err !== null && 'response' in err && typeof (err as any).response?.data?.error === 'string') {
-        setError((err as any).response.data.error);
+      // Definir tipo auxiliar para error de Axios
+      interface AxiosError {
+        response?: {
+          data?: {
+            error?: string;
+          };
+        };
+      }
+      if (
+        typeof err === 'object' &&
+        err !== null &&
+        'response' in err &&
+        (err as AxiosError).response?.data?.error
+      ) {
+        setError((err as AxiosError).response!.data!.error!);
       } else {
-        setError("Error al iniciar sesión");
+        setError('Error al iniciar sesión');
       }
     }
   };

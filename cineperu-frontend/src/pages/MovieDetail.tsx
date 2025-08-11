@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import axios from '../api/axios';
+import API from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import LoginModal from '../components/LoginModal';
 import RegisterModal from '../components/RegisterModal';
@@ -39,10 +39,16 @@ const MovieDetail: React.FC = () => {
   const [pendingAction, setPendingAction] = useState<null | (() => void)>(null);
 
   useEffect(() => {
-    axios.get(`/peliculas/${id}`)
-      .then(res => setMovie(res.data as any))
-      .catch(() => {})
-    setLoading(false);
+    (async () => {
+      try {
+        const res = await API.get(`/peliculas/${id}`);
+        setMovie(res.data as Movie);
+      } catch {
+        // Manejo de error opcional
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, [id]);
 
   const handleGoToCart = async () => {
@@ -54,7 +60,7 @@ const MovieDetail: React.FC = () => {
     }
     if (!movie) return;
     try {
-      await axios.post('/carrito', {
+      await API.post('/carrito', {
         pelicula_id: movie.id,
         tipo: alquilerMode ? 'ALQUILER' : 'COMPRA',
         cantidad,
@@ -67,14 +73,15 @@ const MovieDetail: React.FC = () => {
       if (
         err &&
         typeof err === 'object' &&
+        'isAxiosError' in err &&
+        (err as any).isAxiosError &&
         'response' in err &&
-        err.response &&
-        typeof (err as any).response === 'object' &&
+        (err as any).response &&
         'data' in (err as any).response &&
-        (err as any).response.data &&
-        typeof (err as any).response.data === 'object'
+        (err as any).response.data
       ) {
-        msg = (err as any).response.data.mensaje || (err as any).response.data.error || msg;
+        const data = (err as any).response.data as { mensaje?: string; error?: string };
+        msg = data.mensaje || data.error || msg;
       }
       if (msg === 'La película ya está en el carrito') {
         setNotify({

@@ -57,14 +57,16 @@ const MisPeliculas: React.FC = () => {
     })
       .then(res => {
         const data = (res && res.data) ? res.data : {};
-        const comprasArr = (data && typeof data === 'object' && 'compras' in data && Array.isArray((data as any).compras)) ? (data as any).compras : [];
-        const alquileresArr = (data && typeof data === 'object' && 'alquileres' in data && Array.isArray((data as any).alquileres)) ? (data as any).alquileres : [];
-        const compras = comprasArr.map((c: any) => ({
+        type CompraRaw = Omit<CompraAlquiler, 'tipo' | 'fecha'> & { fecha_compra?: string; fecha?: string };
+        type AlquilerRaw = Omit<CompraAlquiler, 'tipo' | 'fecha'> & { fecha_inicio?: string; fecha?: string };
+        const comprasArr: CompraRaw[] = (data && typeof data === 'object' && 'compras' in data && Array.isArray((data as { compras?: CompraRaw[] }).compras)) ? (data as { compras?: CompraRaw[] }).compras ?? [] : [];
+        const alquileresArr: AlquilerRaw[] = (data && typeof data === 'object' && 'alquileres' in data && Array.isArray((data as { alquileres?: AlquilerRaw[] }).alquileres)) ? (data as { alquileres?: AlquilerRaw[] }).alquileres ?? [] : [];
+        const compras: CompraAlquiler[] = comprasArr.map((c) => ({
           ...c,
           tipo: 'COMPRA',
           fecha: c.fecha_compra || c.fecha || '',
         }));
-        const alquileres = alquileresArr.map((a: any) => ({
+        const alquileres: CompraAlquiler[] = alquileresArr.map((a) => ({
           ...a,
           tipo: 'ALQUILER',
           fecha: a.fecha_inicio || a.fecha || '',

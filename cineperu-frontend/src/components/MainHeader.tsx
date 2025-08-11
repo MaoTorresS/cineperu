@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import DefaultUserImg from "./DefaultUserImg";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
-import { useConfirm } from "./ConfirmProvider";
+import { useConfirm } from "../context/ConfirmContext";
 
 // Menú desplegable para usuario logeado
 const menuItemStyle: React.CSSProperties = {
@@ -23,7 +23,7 @@ const menuItemStyle: React.CSSProperties = {
   outline: 'none',
 };
 
-import type { User } from "../context/AuthContext";
+import type { User } from "../context/AuthContextDef";
 
 const UserDropdown: React.FC<{ user: User }> = ({ user }) => {
   const [open, setOpen] = React.useState(false);

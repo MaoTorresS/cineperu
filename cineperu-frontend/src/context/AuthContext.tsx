@@ -1,23 +1,8 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+
+import { useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
-
-export interface User {
-  id: string;
-  nombre: string;
-  apellido: string;
-  correo: string;
-  rol: string;
-  imagen_perfil?: string;
-}
-
-type AuthContextType = {
-  token: string | null;
-  user: User | null;
-  login: (token: string, user: User) => void;
-  logout: () => void;
-};
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import type { User, AuthContextType } from './AuthContextDef';
+import { AuthContext } from './AuthContextDef';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));

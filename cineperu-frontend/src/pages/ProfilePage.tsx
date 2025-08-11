@@ -35,14 +35,18 @@ const ProfilePage: React.FC = () => {
 
   useEffect(() => {
     if (!user) return;
-    axios.get(`/usuarios/perfil`)
-      .then(res => {
-        const data = res.data as any;
+    (async () => {
+      try {
+        const res = await axios.get(`/usuarios/perfil`);
+        const data = res.data as { compras?: CompraAlquiler[]; alquileres?: CompraAlquiler[] };
         setCompras(data.compras || []);
         setAlquileres(data.alquileres || []);
-      })
-      .catch(() => {})
-    setLoading(false);
+      } catch {
+        // Manejo de error opcional
+      } finally {
+        setLoading(false);
+      }
+    })();
   }, [user]);
 
   if (!user) return <div className="text-center py-10">No autenticado</div>;

@@ -18,8 +18,8 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     import('../api/axios').then(({ default: axios }) => {
-      axios.get('/peliculas?limit=40')
-        .then(res => setMovies((res.data as any).peliculas))
+      axios.get<{ peliculas: Movie[] }>('/peliculas?limit=40')
+        .then(res => setMovies(res.data.peliculas))
         .catch(() => {})
         .then(() => setLoading(false));
     });

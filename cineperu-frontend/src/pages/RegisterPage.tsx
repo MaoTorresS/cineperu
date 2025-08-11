@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { User } from '../context/AuthContext';
+import type { User } from '../context/AuthContextDef';
 import { Link, useNavigate } from 'react-router-dom';
 import API from '../api/axios';
 import { useAuth } from '../context/AuthContext';
@@ -32,15 +32,16 @@ export default function RegisterPage() {
       if (
         err &&
         typeof err === 'object' &&
+        'isAxiosError' in err &&
+        (err as any).isAxiosError &&
         'response' in err &&
-        err.response &&
-        typeof (err as any).response === 'object' &&
+        (err as any).response &&
         'data' in (err as any).response &&
         (err as any).response.data &&
         typeof (err as any).response.data === 'object' &&
         'error' in (err as any).response.data
       ) {
-        setError((err as any).response.data.error || 'Error al registrar');
+        setError(((err as any).response.data as { error?: string }).error || 'Error al registrar');
       } else {
         setError('Error al registrar');
       }

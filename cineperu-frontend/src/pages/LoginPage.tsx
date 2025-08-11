@@ -4,7 +4,7 @@ import API from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import MainHeader from '../components/MainHeader';
 
-import type { User } from '../context/AuthContext';
+import type { User } from '../context/AuthContextDef';
 type LoginResponse = {
   token: string;
   usuario: User;
@@ -27,18 +27,20 @@ export default function LoginPage() {
       navigate('/');
     } catch (err: unknown) {
       console.error('Error al hacer login:', err);
+      interface AxiosError {
+        response?: {
+          data?: {
+            error?: string;
+          };
+        };
+      }
       if (
-        err &&
         typeof err === 'object' &&
+        err !== null &&
         'response' in err &&
-        err.response &&
-        typeof (err as any).response === 'object' &&
-        'data' in (err as any).response &&
-        (err as any).response.data &&
-        typeof (err as any).response.data === 'object' &&
-        'error' in (err as any).response.data
+        (err as AxiosError).response?.data?.error
       ) {
-        setError((err as any).response.data.error || 'Error al iniciar sesión');
+        setError((err as AxiosError).response!.data!.error!);
       } else {
         setError('Error al iniciar sesión');
       }

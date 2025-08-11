@@ -81,8 +81,21 @@ const CartPage: React.FC = () => {
         navigate('/');
       }, 2200);
     } catch (err: unknown) {
-      if (typeof err === 'object' && err !== null && 'response' in err && typeof (err as any).response?.data?.mensaje === 'string') {
-        setError((err as any).response.data.mensaje);
+      // Definir tipo auxiliar para error de Axios
+      interface AxiosError {
+        response?: {
+          data?: {
+            mensaje?: string;
+          };
+        };
+      }
+      if (
+        typeof err === 'object' &&
+        err !== null &&
+        'response' in err &&
+        (err as AxiosError).response?.data?.mensaje
+      ) {
+        setError((err as AxiosError).response!.data!.mensaje!);
       } else {
         setError('No se pudo realizar el pago');
       }
