@@ -40,7 +40,7 @@ export const registrarPelicula = async (req: Request, res: Response) => {
     const data = req.body;
     // Si se subió archivo, guardar la ruta pública
     if (req.file) {
-      data.portada_url = `/assets/portadas/${req.file.filename}`;
+      data.portada_url = `/api/portadas/${req.file.filename}`;
     }
     // Convertir campos numéricos y fecha
     if (data.duracion_minutos !== undefined) data.duracion_minutos = Number(data.duracion_minutos);
@@ -65,7 +65,7 @@ export const editarPelicula = async (req: Request, res: Response) => {
   try {
     // Si se subió archivo, guardar la ruta pública
     if (req.file) {
-      datos.portada_url = `/assets/portadas/${req.file.filename}`;
+      datos.portada_url = `/api/portadas/${req.file.filename}`;
     }
     // Convertir campos numéricos y fecha
     if (datos.duracion_minutos !== undefined) datos.duracion_minutos = Number(datos.duracion_minutos);

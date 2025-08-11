@@ -21,6 +21,11 @@ const app = express();
 app.use(cors());
 app.use(json());
 
+
+// Servir imágenes de portadas
+app.use('/api/portadas', express.static(path.join(__dirname, '../assets/portadas')));
+
+
 // Servir la carpeta de portadas como pública
 app.use('/assets/portadas', express.static(path.join(__dirname, '../assets/portadas')));
 
