@@ -156,7 +156,7 @@ const MisPeliculas: React.FC = () => {
             item.pelicula && (
               <div key={item.id + '-' + item.tipo + '-' + idx} className="movie-card" onClick={() => window.open(`/peliculas/${item.pelicula.id}`, '_blank')} tabIndex={0} role="button" aria-label={item.pelicula.titulo}>
                 <div className="movie-image">
-                  <img src={item.pelicula.portada_url} alt={item.pelicula.titulo} />
+                  <img src={item.pelicula.portada_url && item.pelicula.portada_url.startsWith('/assets/portadas/') ? `http://localhost:3000${item.pelicula.portada_url}` : item.pelicula.portada_url} alt={item.pelicula.titulo} />
                 </div>
                 <div className="movie-title" title={item.pelicula.titulo}>{item.pelicula.titulo}</div>
                 <div className="movie-meta" style={{ color: item.tipo === 'COMPRA' ? '#22c55e' : '#3b82f6', fontWeight: 600 }}>

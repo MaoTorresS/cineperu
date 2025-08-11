@@ -16,10 +16,15 @@ const MovieCard: React.FC<MovieCardProps> = ({ titulo, portada_url, genero, prec
   } else if (typeof genero === 'string') {
     generoText = genero;
   }
+  // Normalizar URL de portada
+  let portadaSrc = portada_url;
+  if (portada_url && portada_url.startsWith('/assets/portadas/')) {
+    portadaSrc = `http://localhost:3000${portada_url}`;
+  }
   return (
     <div className="movie-card" onClick={onClick} tabIndex={0} role="button" aria-label={titulo}>
       <div className="movie-image">
-        <img src={portada_url} alt={titulo} />
+        <img src={portadaSrc} alt={titulo} />
       </div>
       <div className="movie-title" title={titulo}>{titulo}</div>
       {generoText && <div className="movie-meta">{generoText}</div>}

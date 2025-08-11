@@ -40,8 +40,8 @@ const Dashboard: React.FC = () => {
 
   // Hero: hasta 3 películas destacadas
   const heroMovies = movies.slice(0, 3);
-  // Destacados: siguientes 5 películas
-  const destacados = movies.slice(3, 8);
+  // Destacados: primeras 8 películas (incluye las del carrusel)
+  const destacados = movies.slice(0, 8);
   // Solo para ti: siguientes 6 películas
   const soloParaTi = movies.slice(8, 14);
 
@@ -51,7 +51,7 @@ const Dashboard: React.FC = () => {
     <div className="dashboard-root">
       {/* HERO SECTION - Carrusel */}
       {heroMovies.length > 0 && (
-        <section className="dashboard-hero" style={{backgroundImage: `linear-gradient(90deg, rgba(15,15,16,0.92) 25%, rgba(15,15,16,0.35)), url('${heroMovies[heroIndex].portada_url}')`}}>
+  <section className="dashboard-hero" style={{backgroundImage: `linear-gradient(90deg, rgba(15,15,16,0.92) 25%, rgba(15,15,16,0.35)), url('${heroMovies[heroIndex].portada_url && heroMovies[heroIndex].portada_url.startsWith('/assets/portadas/') ? `http://localhost:3000${heroMovies[heroIndex].portada_url}` : heroMovies[heroIndex].portada_url}')`}}>
           <div className="dashboard-hero-content">
             <div className="dashboard-hero-tag">Estreno Exclusivo</div>
             <h1>{heroMovies[heroIndex].titulo}</h1>
@@ -79,7 +79,7 @@ const Dashboard: React.FC = () => {
               className="dashboard-card"
               onClick={() => handleMovieClick(movie.id)}
             >
-              <img src={movie.portada_url} alt={movie.titulo} />
+              <img src={movie.portada_url && movie.portada_url.startsWith('/assets/portadas/') ? `http://localhost:3000${movie.portada_url}` : movie.portada_url} alt={movie.titulo} />
               <span className="dashboard-badge">Nuevo</span>
             </div>
           ))}
@@ -96,7 +96,7 @@ const Dashboard: React.FC = () => {
               className="dashboard-card"
               onClick={() => handleMovieClick(movie.id)}
             >
-              <img src={movie.portada_url} alt={movie.titulo} />
+              <img src={movie.portada_url && movie.portada_url.startsWith('/assets/portadas/') ? `http://localhost:3000${movie.portada_url}` : movie.portada_url} alt={movie.titulo} />
             </div>
           ))}
         </div>

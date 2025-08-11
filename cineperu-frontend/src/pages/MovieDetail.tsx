@@ -118,7 +118,7 @@ const MovieDetail: React.FC = () => {
       <div className="movie-detail-main">
         <div className="movie-detail-img-col">
           <img
-            src={movie.portada_url}
+            src={movie.portada_url && movie.portada_url.startsWith('/assets/portadas/') ? `http://localhost:3000${movie.portada_url}` : movie.portada_url}
             alt={movie.titulo}
             className="movie-detail-img"
           />

@@ -68,10 +68,10 @@ const CartPage: React.FC = () => {
 
   if (loading) return <div className="text-center py-10">Cargando carrito...</div>;
 
-  // Acción de realizar pago
+  // Acción de realizar pago (finalizar carrito)
   const handleCheckout = async () => {
     try {
-      await axios.post('/compra', {}, {
+      await axios.post('/carrito/finalizar', {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setItems([]);
@@ -80,8 +80,9 @@ const CartPage: React.FC = () => {
         setSuccess('');
         navigate('/');
       }, 2200);
-    } catch {
-      setError('No se pudo realizar el pago');
+    } catch (err: any) {
+      const msg = err?.response?.data?.mensaje || 'No se pudo realizar el pago';
+      setError(msg);
     }
   };
 
@@ -108,7 +109,11 @@ const CartPage: React.FC = () => {
               {items.map((item) => (
                 <tr key={item.id} style={{ borderBottom: '1px solid #222' }}>
                   <td>
-                    <img src={item.pelicula.portada_url} alt={item.pelicula.titulo} style={{ width: 54, height: 78, objectFit: 'cover', borderRadius: 8, boxShadow: '0 2px 8px 0 rgba(0,0,0,0.10)' }} />
+                    <img
+                      src={item.pelicula.portada_url && item.pelicula.portada_url.startsWith('/assets/portadas/') ? `http://localhost:3000${item.pelicula.portada_url}` : item.pelicula.portada_url}
+                      alt={item.pelicula.titulo}
+                      style={{ width: 54, height: 78, objectFit: 'cover', borderRadius: 8, boxShadow: '0 2px 8px 0 rgba(0,0,0,0.10)' }}
+                    />
                   </td>
                   <td>
                     <div style={{ fontWeight: 600, color: '#fff', fontSize: 16 }}>{item.pelicula.titulo}</div>
