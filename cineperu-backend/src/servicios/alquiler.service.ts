@@ -1,21 +1,32 @@
 import { prisma } from '../prisma/client';
 import { differenceInDays, isAfter, addDays } from 'date-fns';
 
+
 export const obtenerAlquileresPorUsuario = async (usuario_id: string) => {
+  const hoy = new Date();
+  // Actualizar en BD los alquileres vencidos
+  await prisma.alquiler.updateMany({
+    where: {
+      usuario_id,
+      fecha_fin: { lt: hoy },
+      estado: { not: 'VENCIDO' }
+    },
+    data: { estado: 'VENCIDO' }
+  });
+
+  // Obtener todos los alquileres del usuario
   const alquileres = await prisma.alquiler.findMany({
     where: { usuario_id },
     include: { pelicula: true },
     orderBy: { fecha_inicio: 'desc' },
   });
 
-  return alquileres.map((alquiler) => {
-    const hoy = new Date();
-    const estaVigente = isAfter(new Date(alquiler.fecha_fin), hoy);
+  return alquileres.map((alquiler: any) => {
+    const estaVigente = alquiler.estado === 'VIGENTE' || (alquiler.fecha_fin > hoy && alquiler.estado !== 'VENCIDO');
     const diasRestantes = estaVigente ? differenceInDays(new Date(alquiler.fecha_fin), hoy) : 0;
-
     return {
       ...alquiler,
-      estado: estaVigente ? 'vigente' : 'vencido',
+      estado: estaVigente ? 'VIGENTE' : 'VENCIDO',
       dias_restantes: diasRestantes,
     };
   });
@@ -71,9 +82,9 @@ export const crearAlquiler = async (
     data: {
       usuario_id,
       pelicula_id,
-      tipo: 'alquiler',
+  tipo: 'ALQUILER',
       monto: pelicula.precio_alquiler,
-      estado_pago: 'exitoso',
+  estado_pago: 'EXITOSO',
     },
   });
 

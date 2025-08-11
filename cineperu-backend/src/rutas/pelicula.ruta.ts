@@ -16,6 +16,8 @@ import {
   borrarPelicula,
 } from '../controladores/pelicula.controller';
 
+import uploadPortada from '../middlewares/uploadPortada';
+
 // Importamos el middleware de autenticación para proteger las rutas
 // Este middleware se utiliza para asegurar que solo los usuarios autenticados puedan acceder a ciertas rutas
 import { protegerRuta } from '../middlewares/auth.middleware';
@@ -43,10 +45,10 @@ router.get('/', asyncHandler(listarPeliculas));
 // Esta ruta no requiere autenticación, por lo que no se protege
 router.get('/:id', asyncHandler(obtenerPelicula));
 
-// POST /peliculas - Registrar una nueva película
-// Se protege la ruta para que solo usuarios autenticados puedan registrar películas
-router.post('/', protegerRuta, isAdmin, asyncHandler(registrarPelicula));
-router.put('/:id', protegerRuta, isAdmin, asyncHandler(editarPelicula));
+// POST /peliculas - Registrar una nueva película (con posible imagen)
+router.post('/', protegerRuta, isAdmin, uploadPortada.single('portada'), asyncHandler(registrarPelicula));
+// PUT /peliculas/:id - Editar película (con posible imagen)
+router.put('/:id', protegerRuta, isAdmin, uploadPortada.single('portada'), asyncHandler(editarPelicula));
 router.delete('/:id', protegerRuta, isAdmin, asyncHandler(borrarPelicula));
 
 export default router;

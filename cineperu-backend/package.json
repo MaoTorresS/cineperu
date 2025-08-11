@@ -12,7 +12,8 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "prisma:push": "prisma db push",
-    "prisma:seed": "ts-node --transpile-only src/prisma/seed.ts",
+    "prisma:seed": "node src/prisma/seed.js",
+    "seed": "node src/prisma/seed.js",
     "dev:init": "npm run prisma:push && npm run prisma:seed && npm run dev",
     "db:reset": "prisma migrate reset --force && npm run prisma:seed"
   },
@@ -27,13 +28,15 @@
     "date-fns": "^4.1.0",
     "dotenv": "^16.6.0",
     "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.0.0",
     "@types/node": "^24.0.4",
     "prisma": "^6.10.1",
     "ts-node": "^10.9.2",
@@ -41,6 +44,6 @@
     "typescript": "^5.8.3"
   },
   "prisma": {
-    "seed": "ts-node --transpile-only src/prisma/seed.ts"
+    "seed": "node src/prisma/seed.js"
   }
 }

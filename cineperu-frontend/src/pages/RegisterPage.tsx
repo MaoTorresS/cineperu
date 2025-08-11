@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import type { User } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import API from '../api/axios';
 import { useAuth } from '../context/AuthContext';
-import NavBar from '../components/NavBar';
+import MainHeader from '../components/MainHeader';
 
 export default function RegisterPage() {
   const [nombre, setNombre] = useState('');
@@ -23,8 +24,9 @@ export default function RegisterPage() {
 
     try {
       await API.post('/auth/registro', { nombre, correo, contraseña });
-      const loginRes = await API.post<{ token: string }>('/auth/login', { correo, contraseña });
-      login(loginRes.data.token);
+  const loginRes = await API.post<{ token: string; usuario: User }>('/auth/login', { correo, contraseña });
+  login(loginRes.data.token, loginRes.data.usuario);
+// ...existing code...
       navigate('/');
     } catch (err: any) {
       setError(err.response?.data?.error || 'Error al registrar');
@@ -33,7 +35,7 @@ export default function RegisterPage() {
 
   return (
     <>
-      <NavBar />
+  <MainHeader />
       <div className="font-sans">
         <div className="relative min-h-screen flex flex-col sm:justify-center items-center bg-gray-100 dark:bg-gray-900 py-6">
           <div className="relative sm:max-w-sm w-full">

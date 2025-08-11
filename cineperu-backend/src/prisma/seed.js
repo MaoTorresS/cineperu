@@ -11,122 +11,88 @@ async function main() {
     const adminEmail = "admin@cineperu.com";
     const adminPassword = await bcrypt.hash("admin123", 10);
 
-    const admin = await prisma.usuario.upsert({
-      where: { correo: adminEmail },
-      update: {
-        contraseña: adminPassword,
-        rol: "admin"
-      },
-      create: {
-        nombre: "Admin",
-        correo: adminEmail,
-        contraseña: adminPassword,
-        rol: "admin",
-      },
-    });
+    // Solo crear admin si no existe
+    let admin = await prisma.usuario.findUnique({ where: { correo: adminEmail } });
+    if (!admin) {
+      admin = await prisma.usuario.create({
+        data: {
+          nombre: "Admin",
+          apellido: "CinePeru",
+          correo: adminEmail,
+          contraseña: adminPassword,
+          rol: "ADMIN",
+        },
+      });
+      console.log("✅ Admin creado:", admin.id);
+    } else {
+      console.log("ℹ️ Admin ya existe:", admin.id);
+    }
 
-    console.log("✅ Admin creado/actualizado:", admin.id);
-
-    // Crear usuario normal
+    // Solo crear usuario normal si no existe
     const userEmail = "user@cineperu.com";
     const userPassword = await bcrypt.hash("user123", 10);
+    let usuario = await prisma.usuario.findUnique({ where: { correo: userEmail } });
+    if (!usuario) {
+      usuario = await prisma.usuario.create({
+        data: {
+          nombre: "Usuario",
+          apellido: "Normal",
+          correo: userEmail,
+          contraseña: userPassword,
+          rol: "USUARIO",
+        },
+      });
+      console.log("✅ Usuario normal creado:", usuario.id);
+    } else {
+      console.log("ℹ️ Usuario normal ya existe:", usuario.id);
+    }
 
-    const usuario = await prisma.usuario.upsert({
-      where: { correo: userEmail },
-      update: {
-        contraseña: userPassword
-      },
-      create: {
-        nombre: "Usuario Normal",
-        correo: userEmail,
-        contraseña: userPassword,
-        rol: "usuario",
-      },
-    });
 
-    console.log("✅ Usuario normal creado/actualizado:", usuario.id);
-
-    // Crear películas demo
-    const peliculas = [
-      {
-        titulo: "Matrix",
-        sinopsis: "Un hacker descubre la verdad sobre su realidad.",
-        director: "Wachowski",
-        genero: ["Acción", "Ciencia Ficción"],
-        duracion_minutos: 136,
-        portada_url: "https://via.placeholder.com/200x300?text=Matrix",
-        trailer_url: "https://youtube.com/watch?v=m8e-FF8MsqU",
-        fecha_estreno: new Date("1999-03-31"),
-        precio_compra: 19.99,
-        precio_alquiler: 4.99,
-        estado: "DISPONIBLE",
-      },
-      {
-        titulo: "Interestelar",
-        sinopsis: "Un viaje a través del espacio para salvar a la humanidad.",
-        director: "Christopher Nolan",
-        genero: ["Drama", "Ciencia Ficción"],
-        duracion_minutos: 169,
-        portada_url: "https://via.placeholder.com/200x300?text=Interestelar",
-        trailer_url: "https://youtube.com/watch?v=zSWdZVtXT7E",
-        fecha_estreno: new Date("2014-11-07"),
-        precio_compra: 24.99,
-        precio_alquiler: 5.99,
-        estado: "DISPONIBLE",
-      },
-      {
-        titulo: "El Padrino",
-        sinopsis: "La historia de una familia de la mafia italiana.",
-        director: "Francis Ford Coppola",
-        genero: ["Drama", "Crimen"],
-        duracion_minutos: 175,
-        portada_url: "https://via.placeholder.com/200x300?text=El+Padrino",
-        trailer_url: "https://youtube.com/watch?v=sY1S34973zA",
-        fecha_estreno: new Date("1972-03-24"),
-        precio_compra: 19.99,
-        precio_alquiler: 4.99,
-        estado: "DISPONIBLE",
-      },
-      {
-        titulo: "Blancanieves 2025",
-        sinopsis: "Una nueva adaptación del clásico cuento, más oscura y retorcida.",
-        director: "Sofia Luna",
-        genero: ["Fantasia", "Drama"],
-        duracion_minutos: 120,
-        portada_url: "/portadas/blancanieves2025.jpg",
-        trailer_url: "https://www.youtube.com/watch?v=abc123",
-        fecha_estreno: new Date("2025-11-01"),
-        precio_compra: 40,
-        precio_alquiler: 6,
-        estado: "DISPONIBLE"
-      },
-      {
-        titulo: "Shrek 5",
-        sinopsis: "El ogro favorito de todos regresa con nuevas locuras.",
-        director: "Walt Dohrn",
-        genero: ["Animación", "Comedia"],
-        duracion_minutos: 135,
-        portada_url: "/portadas/sherk5.jpg",
-        trailer_url: "https://www.youtube.com/watch?v=ghi012",
-        fecha_estreno: new Date("2025-08-10"),
-        precio_compra: 45.99,
-        precio_alquiler: 6.99,
-        estado: "DISPONIBLE",
-      }
+    // Crear géneros demo
+    const generosData = [
+      { nombre: "Acción", descripcion: "Películas de acción y aventura" },
+      { nombre: "Ciencia Ficción", descripcion: "Películas de ciencia ficción" },
+      { nombre: "Drama", descripcion: "Películas dramáticas" },
+      { nombre: "Crimen", descripcion: "Películas de crimen y mafia" },
+      { nombre: "Fantasia", descripcion: "Películas de fantasía" },
+      { nombre: "Animación", descripcion: "Películas animadas" },
+      { nombre: "Comedia", descripcion: "Películas cómicas" }
     ];
 
-    // Crear películas
-    for (const peliculaData of peliculas) {
-      try {
-        const pelicula = await prisma.pelicula.upsert({
-          where: { titulo: peliculaData.titulo },
-          update: peliculaData,
-          create: peliculaData,
-        });
-        console.log(`✅ Película "${peliculaData.titulo}" creada/actualizada:`, pelicula.id);
-      } catch (error) {
-        console.log(`⚠️ Error con película "${peliculaData.titulo}":`, error.message);
+    const generos = {};
+    for (const generoData of generosData) {
+      let genero = await prisma.genero.findUnique({ where: { nombre: generoData.nombre } });
+      if (!genero) {
+        genero = await prisma.genero.create({ data: generoData });
+        console.log(`✅ Género creado: ${genero.nombre}`);
+      } else {
+        console.log(`ℹ️ Género ya existe: ${genero.nombre}`);
       }
+      generos[genero.nombre] = genero;
+    }
+
+    // Solo crear la película Matrix si no existe
+    const matrixData = {
+      titulo: "Matrix",
+      sinopsis: "Un hacker descubre la verdad sobre su realidad.",
+      descripcion: "Matrix es una película de ciencia ficción y acción que explora la realidad simulada.",
+      director: "Wachowski",
+      generoId: generos["Ciencia Ficción"].id,
+      duracion_minutos: 136,
+      cantidad: 10,
+      portada_url: "https://via.placeholder.com/200x300?text=Matrix",
+      trailer_url: "https://youtube.com/watch?v=m8e-FF8MsqU",
+      fecha_estreno: new Date("1999-03-31"),
+      precio_compra: 19.99,
+      precio_alquiler: 4.99,
+      estado: "DISPONIBLE",
+    };
+    let matrix = await prisma.pelicula.findUnique({ where: { titulo: matrixData.titulo } });
+    if (!matrix) {
+      matrix = await prisma.pelicula.create({ data: matrixData });
+      console.log(`✅ Película "${matrixData.titulo}" creada:`, matrix.id);
+    } else {
+      console.log(`ℹ️ Película "${matrixData.titulo}" ya existe:`, matrix.id);
     }
 
     console.log("🎬 Seed completado exitosamente");

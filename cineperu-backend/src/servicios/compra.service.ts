@@ -1,11 +1,10 @@
 // src/servicios/compra.service.ts
 import { prisma } from '../prisma/client';
-import { Compra } from '@prisma/client';
 
 export const crearCompra = async (
   usuario_id: string,
   pelicula_id: string
-): Promise<Compra> => {
+) => {
   // Obtener la película
   const pelicula = await prisma.pelicula.findUnique({
     where: { id: pelicula_id },
@@ -44,9 +43,9 @@ export const crearCompra = async (
     data: {
       usuario_id,
       pelicula_id,
-      tipo: 'compra',
+  tipo: 'COMPRA',
       monto: pelicula.precio_compra,
-      estado_pago: 'exitoso',
+  estado_pago: 'EXITOSO',
     },
   });
 

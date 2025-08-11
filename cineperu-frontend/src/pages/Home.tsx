@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import API from '../api/axios'
-import NavBar from '../components/NavBar'
+import MainHeader from '../components/MainHeader'
 
 type Pelicula = {
   id: string
@@ -27,7 +27,7 @@ export const Home = () => {
 
   return (
     <>
-      <NavBar />
+  <MainHeader />
         <div className="max-w-7xl mx-auto p-6">
           <h1 className="text-3xl font-bold mb-8 text-gray-900 dark:text-gray-100">
             🎬 Películas Disponibles
