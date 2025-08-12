@@ -43,7 +43,7 @@ const CartPage: React.FC = () => {
       });
       setItems(items.filter(item => item.id !== id));
     } catch {
-      setError('No se pudo eliminar el ítem');
+      setError('No se pudo eliminar el ítem 😞');
     }
   };
 
@@ -75,7 +75,7 @@ const CartPage: React.FC = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       setItems([]);
-      setSuccess('¡Pago realizado con éxito! Serás redirigido al inicio...');
+      setSuccess('¡Pago realizado con éxito 😎! Serás redirigido al inicio...');
       setTimeout(() => {
         setSuccess('');
         navigate('/');
