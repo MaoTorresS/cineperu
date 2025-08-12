@@ -156,7 +156,7 @@ Desarrollar una aplicación web responsiva que permita a usuarios del Perú comp
   - película ↔ administrador  
 
 
-![Diagrama ER](./cineperu-backend/assets/DiagramaDB.png)
+![Diagrama ER](./cineperu-backend/assets/Base_datos.jpg)
 
 ---
 
@@ -166,7 +166,7 @@ Desarrollar una aplicación web responsiva que permita a usuarios del Perú comp
 ![Arquitectura Inicial](./cineperu-backend/assets/DiagramaDB_dearrollo.png)
 
 **Arquitectura Final:**
-![Arquitectura Final](./cineperu-backend/assets/Arquitectura_Final.png)
+![Arquitectura Final](./cineperu-backend/assets/FlujoCINE.png)
 
 ### 🧱 Arquitectura
 

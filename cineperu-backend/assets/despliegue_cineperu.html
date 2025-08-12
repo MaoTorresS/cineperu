@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Despliegue y Orquestación de CinePerú</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background: #f9f9f9; }
+    h1, h2 { color: #2d3748; }
+    code, pre { background: #eee; padding: 2px 6px; border-radius: 4px; }
+    .block { background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; padding: 1.5em; margin-bottom: 2em; }
+    ul { margin-top: 0.5em; }
+  </style>
+</head>
+<body>
+  <h1>🚀 Integración y Despliegue de CinePerú v2.0.0</h1>
+
+  <div class="block">
+    <h2>1. CI/CD Automático (GitHub Actions)</h2>
+    <ul>
+      <li>En cada <b>push</b> o <b>pull request</b> a <code>main</code>:</li>
+      <ul>
+        <li>Se instala, lint, testea y construye el <b>backend</b> (<code>cineperu-backend</code>).</li>
+        <li>Si los tests pasan, se dispara el <b>deploy automático en Render</b> usando un Deploy Hook seguro.</li>
+        <li>Se instala, lint, testea y construye el <b>frontend</b> (<code>cineperu-frontend</code>).</li>
+        <li>El frontend se despliega automáticamente en <b>Vercel</b> (por integración directa con GitHub).</li>
+      </ul>
+      <li>La base de datos está en <b>Railway</b> y solo se usa como servicio, no se despliega código ahí.</li>
+    </ul>
+    <pre>
+# Fragmento relevante del workflow:
+jobs:
+  build-backend: ... # Lint, test, build
+  deploy-backend:    # Solo si build-backend pasa
+    needs: build-backend
+    steps:
+      - name: Trigger Render Deploy Hook
+        run: curl -X POST "https://api.render.com/deploy/..."
+  build-frontend: ... # Lint, test, build
+    </pre>
+  </div>
+
+  <div class="block">
+    <h2>2. Orquestación local con Docker Compose</h2>
+    <ul>
+      <li><b>db</b>: Crea un contenedor PostgreSQL con persistencia de datos y healthcheck.</li>
+      <li><b>backend</b>: Construye la API Node.js/Express desde <code>cineperu-backend</code>, espera a que la base de datos esté lista y expone el puerto 3000.</li>
+      <li><b>frontend</b>: Construye el frontend desde <code>cineperu-frontend</code> y lo expone en el puerto 5173.</li>
+      <li>El backend se conecta a la base de datos usando la URL interna <code>db:5432</code>.</li>
+      <li>El volumen <code>postgres_data</code> asegura que los datos de la base no se pierdan al reiniciar.</li>
+    </ul>
+    <pre>
+# Fragmento relevante de docker-compose.yml:
+services:
+  db:
+    image: postgres:15
+    ...
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  backend:
+    build: ./cineperu-backend
+    ...
+    depends_on:
+      db:
+        condition: service_healthy
+  frontend:
+    build:
+      context: ./cineperu-frontend
+      dockerfile: Dockerfile
+    ...
+    depends_on:
+      - backend
+volumes:
+  postgres_data:
+    </pre>
+  </div>
+
+  <div class="block">
+    <h2>3. Flujo de despliegue en producción</h2>
+    <ol>
+      <li>El código se sube a GitHub (<b>main</b>).</li>
+      <li>GitHub Actions valida y construye backend y frontend.</li>
+      <li>Si el backend pasa los tests, Render lo despliega automáticamente.</li>
+      <li>Vercel detecta el push y despliega el frontend.</li>
+      <li>El backend en Render se conecta a la base de datos en Railway usando la variable <code>DATABASE_URL</code>.</li>
+    </ol>
+    <p><b>Nota:</b> El flujo de pagos es simulado, no hay integración real con pasarelas.</p>
+  </div>
+</body>
+</html>
