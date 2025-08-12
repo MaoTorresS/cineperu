@@ -1,11 +1,11 @@
 services:
   db: # ← PRIMER SERVICIO (Base de datos)                        
-    image: postgres:15
-    container_name: cineperu_db
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 01deabril
+    image: postgres:15  # Usa la imagen oficial de PostgreSQL versión 15.
+    container_name: cineperu_db # Nombre del contenedor de la base de datos
+    restart: always # Reinicia el contenedor si falla
+    environment: # Variables de entorno para la configuración de PostgreSQL
+      POSTGRES_USER: postgres # Usuario por defecto
+      POSTGRES_PASSWORD: 01deabril # Contraseña por defecto
       POSTGRES_DB: cineperu_db  # ← Crea la BD "cineperu_db"
     ports:
       - "5432:5432" # ← Puerto accesible desde afuera
@@ -27,16 +27,16 @@ services:
       DATABASE_URL: postgresql://postgres:01deabril@db:5432/cineperu_db # ← URL de conexión a la base de datos
       JWT_SECRET: supersecreto123 # ← Clave secreta para JWT
       NODE_ENV: development # ← Modo de entorno (desarrollo o producción)
-    depends_on:
+    depends_on: # ← Espera a que la base de datos esté lista
       db:
         condition: service_healthy  # ← Espera a que la base de datos esté lista
-  frontend:
-    build:
-      context: ./cineperu-frontend
-      dockerfile: Dockerfile
-    ports:
+  frontend:  # ← TERCER SERVICIO (Interfaz de usuario)
+    build: # ← Contexto de construcción para la interfaz de usuario
+      context: ./cineperu-frontend # ← Ruta al Dockerfile de la interfaz de usuario
+      dockerfile: Dockerfile # ← Nombre del Dockerfile
+    ports: # ← Puertos accesibles desde afuera
       - "5173:80"
     depends_on:
       - backend
-volumes:
+volumes: # Volúmenes para persistir datos
   postgres_data: # ← Volumen para persistir datos de la base de datos

@@ -313,65 +313,55 @@ graph LR
 ```
 cineperu/
 │
-├── cineperu-backend/           # 🚀 API Express + Prisma
+├── cineperu-backend/           # Backend: API Express + Prisma + PostgreSQL
 │   ├── src/
-│   │   ├── controladores/      # Lógica de negocio (Controllers)
-│   │   ├── middlewares/        # Autenticación y validaciones
-│   │   ├── rutas/              # Endpoints de la API (Routes)
-│   │   ├── servicios/          # Lógica de aplicación (Services)
-│   │   ├── utils/              # Utilidades (JWT, etc.)
-│   │   ├── prisma/
-│   │   │   ├── client.ts       # Cliente Prisma configurado
-│   │   │   └── seed.js         # Datos iniciales (admin, películas)
-│   │   └── app.ts              # Configuración del servidor Express
+│   │   ├── app.ts              # Punto de entrada del servidor Express
+│   │   ├── controladores/      # Lógica de endpoints (Controllers)
+│   │   ├── middlewares/        # Autenticación, validaciones y subida de archivos
+│   │   ├── rutas/              # Definición de rutas de la API
+│   │   ├── servicios/          # Lógica de negocio y acceso a datos (Services)
+│   │   ├── utils/              # Funciones auxiliares (JWT, Cloudinary, etc.)
+│   │   ├── prisma/             # Cliente Prisma y scripts de seed
+│   │   └── __tests__/          # Pruebas unitarias y de integración
 │   ├── prisma/
-│   │   └── schema.prisma       # Modelo de base de datos
-│   ├── assets/                 # Diagramas y documentación
-│   ├── Dockerfile              # Contenedor del backend
-│   ├── entrypoint.sh           # Script de inicialización
-│   ├── package.json            # Dependencias del backend
-│   ├── tsconfig.json           # Configuración TypeScript
-│   └── README_BACKEND.md       # Documentación del backend
+│   │   ├── schema.prisma       # Esquema y modelo de la base de datos
+│   │   └── migrations/         # Migraciones versionadas de la base de datos
+│   ├── assets/                 # Diagramas, imágenes y recursos estáticos
+│   ├── Dockerfile              # Imagen Docker del backend
+│   ├── entrypoint.sh           # Script de inicialización para Docker
+│   ├── package.json            # Dependencias y scripts del backend
+│   ├── tsconfig.json           # Configuración de TypeScript
+│   └── README_BACKEND.md       # Documentación técnica del backend
 │
-├── cineperu-frontend/          # 🎨 Frontend React + Tailwind
+├── cineperu-frontend/          # Frontend: React + Vite + Tailwind CSS
 │   ├── src/
-│   │   ├── components/         # Componentes reutilizables
-│   │   │   ├── NavBar.tsx      # Barra de navegación
-│   │   │   ├── ProtectedRoute.tsx  # Rutas protegidas
-│   │   │   └── RutaPrivada.tsx # Rutas privadas
-│   │   ├── pages/              # Páginas principales
-│   │   │   ├── Home.tsx        # Página de inicio
-│   │   │   ├── LoginPage.tsx   # Página de login
-│   │   │   └── RegisterPage.tsx # Página de registro
-│   │   ├── context/
-│   │   │   └── AuthContext.tsx # Context API (autenticación)
-│   │   ├── routes/
-│   │   │   ├── AppRouter.tsx   # Enrutador principal
-│   │   │   └── ProtectedRoute.tsx # Rutas protegidas
-│   │   ├── api/
-│   │   │   └── axios.ts        # Configuración de Axios
-│   │   ├── assets/             # Recursos estáticos
-│   │   ├── App.tsx             # Componente principal
-│   │   ├── main.tsx            # Punto de entrada
-│   │   └── index.css           # Estilos globales
-│   ├── public/
-│   │   ├── portadas/           # Imágenes de películas
-│   │   │   ├── blancanieves2025.jpg
-│   │   │   ├── comoentrenaratudragon.jpg
-│   │   │   ├── g20.jpg
-│   │   │   ├── Minecraf.jpg
-│   │   │   ├── misionimposible.jpg
-│   │   │   └── sherk5.jpg
-│   │   └── vite.svg            # Logo de Vite
-│   ├── index.html              # HTML principal
-│   ├── package.json            # Dependencias del frontend
+│   │   ├── api/                # Configuración de Axios y servicios HTTP
+│   │   ├── assets/             # Imágenes y recursos estáticos para componentes
+│   │   ├── components/         # Componentes reutilizables de UI
+│   │   ├── context/            # Contextos globales de React (Auth, Confirm, etc.)
+│   │   ├── hooks/              # Custom hooks reutilizables
+│   │   ├── layout/             # Componentes de layout (headers, wrappers)
+│   │   ├── pages/              # Vistas principales de la aplicación
+│   │   ├── routes/             # Definición de rutas y navegación
+│   │   ├── styles/             # Estilos globales y personalizados
+│   │   ├── App.tsx             # Componente raíz de la app
+│   │   ├── main.tsx            # Punto de entrada de React
+│   │   └── index.css           # Estilos base
+│   ├── public/                 # Archivos estáticos públicos (favicon, imágenes)
+│   ├── Dockerfile              # Imagen Docker del frontend (opcional)
+│   ├── index.html              # HTML principal de la app
+│   ├── package.json            # Dependencias y scripts del frontend
+│   ├── tailwind.config.js      # Configuración de Tailwind CSS
+│   ├── tsconfig.json           # Configuración de TypeScript
 │   ├── vite.config.ts          # Configuración de Vite
-│   ├── tailwind.config.js      # Configuración de Tailwind
-│   ├── tsconfig.json           # Configuración TypeScript
-│   └── README_FRONTEND.md      # Documentación del frontend
+│   └── README_FRONTEND.md      # Documentación técnica del frontend
 │
-├── docker-compose.yml          # 🐳 Orquesta DB + Backend
-└── README.md                   # 📖 Este archivo
+├── docker-compose.yml          # Orquestación de backend y base de datos en desarrollo
+├── .github/
+│   └── workflows/
+│       └── ci.yml              # Pipeline CI/CD con GitHub Actions
+├── README.md                   # Documentación general del proyecto
+└── ...
 ```
 
 ### 🏗️ Descripción de las carpetas principales:

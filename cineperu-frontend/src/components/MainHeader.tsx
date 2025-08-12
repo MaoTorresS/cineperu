@@ -208,7 +208,7 @@ const MainHeader: React.FC = () => {
             🔍
           </span>
         )}
-        {/* Si no está logeado: mostrar botones */}
+        {/* Si no está logeado: mostrar botones *//*ERROR AL CONSTRUIR*/}
         {(() => {
           const { user } = useAuth();
           if (!user) {
